@@ -27,16 +27,19 @@ const LoginScreen = () => {
       try {
         const token = await AsyncStorage.getItem('userToken');
         if (token) {
-          navigation.navigate('Home');
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'Main' }], // Or 'Home' if 'Main' is your root stack for logged-in users
+          });
         } else {
-          // Optional welcome toast on screen load
+          // Optional welcome toast on screen load, no navigation on hide
           Toast.show({
             type: 'info',
             text1: 'Welcome to BestWorkers',
             text2: 'Sign in to find top talent!',
             visibilityTime: 2500,
             position: 'top',
-            topOffset: 70, // Below logo
+            topOffset: 70,
           });
         }
       } catch (error) {
@@ -81,6 +84,7 @@ const LoginScreen = () => {
         ['userToken', response.token],
         ['userID', response.data.id],
         ['isProfession', String(response.data.isProfession)],
+        ['lastActiveTime', new Date().getTime().toString()], // Store last active time
       ]);
 
       Toast.show({
@@ -90,7 +94,10 @@ const LoginScreen = () => {
         visibilityTime: 2500,
         position: 'top',
         topOffset: 70,
-        onHide: () => navigation.navigate('Main'), // Navigate after toast hides
+        onHide: () => navigation.reset({ // Reset stack after successful login
+          index: 0,
+          routes: [{ name: 'Main' }],
+        }),
       });
     } catch (error) {
       console.error('Login error:', error);

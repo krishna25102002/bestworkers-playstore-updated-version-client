@@ -117,7 +117,12 @@ const RegisterScreen = () => {
         visibilityTime: 2500,
         position: 'top',
         topOffset: 70,
-        onHide: () => navigation.navigate('OTP', { email: formData.email }),
+         onHide: () => navigation.navigate('OTP', {
+          name: formData.name,
+          email: formData.email,
+          mobile: formData.mobile,
+          pin: formData.pin, // Ensure PIN is passed here
+        }),
       });
     } catch (error) {
       console.log('Registration error details:', error);

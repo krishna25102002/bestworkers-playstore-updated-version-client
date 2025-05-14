@@ -231,6 +231,37 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+  inputWithIconContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F5F7FA', // Match your input background
+    borderColor: '#E2E8F0',    // Match your input border color
+    borderWidth: 1,
+    borderRadius: 12,           // Match your input border radius
+    paddingHorizontal: 10,     // Add some padding
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  inputIcon: {
+    marginRight: 10, // Space between icon and text input
+    color: '#1E40AF', // Match icon color from dropdowns
+  },
+  inputWithIcon: { // Style for the TextInput itself when inside inputWithIconContainer
+    flex: 1,
+    paddingVertical: 14, // Match your input padding
+    fontSize: 16,        // Match your input font size
+    color: '#333',       // Match your input text color
+    borderWidth: 0,      // Remove individual border as container has it
+    backgroundColor: 'transparent', // Ensure TextInput bg is transparent
+    // height: '100%', // Ensure it takes full height of container if needed
+  },
+  multilineInput: {
+    minHeight: 100,
+    textAlignVertical: 'top',
+  },
 });
 
 export default styles;

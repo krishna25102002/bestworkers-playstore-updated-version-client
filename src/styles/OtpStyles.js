@@ -113,4 +113,12 @@ export default StyleSheet.create({
     fontWeight: '600',
     marginLeft: 5,
   },
+  spamNoteText: {
+  fontSize: 14, // Smaller font size for a note
+  color: 'black', // A gold/yellowish color for a gentle warning/info
+  // Or use a more muted color like: color: '#A0A0A0', 
+  marginTop: 8,     // Space above the note
+  textAlign: 'center', // Center the text
+  paddingHorizontal: 10, // Add some horizontal padding if needed
+},
 });

@@ -505,7 +505,7 @@ export const cities = {
   ],
 };
 
-// Service categories
+// Service categories 
 export const serviceCategories = [
   { label: 'Household Services', value: 'Household Services' },
   { label: 'Mechanics & Vehicle Services', value: 'Mechanics & Vehicle Services' },

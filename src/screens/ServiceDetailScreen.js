@@ -64,6 +64,7 @@ const ServiceDetailScreen = ({ navigation, route }) => {
           state: prof.state,
           serviceCategory: prof.serviceCategory,
           professionDescription: prof.professionDescription,
+          designation: prof.designation, 
           needSupport: prof.needSupport,
           createdAt: prof.createdAt,
           status: prof.status,

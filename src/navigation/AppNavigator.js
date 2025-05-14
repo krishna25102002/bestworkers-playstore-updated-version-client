@@ -98,8 +98,32 @@ const AppNavigator = () => {
   useEffect(() => {
     const checkToken = async () => {
       try {
+        // const token = await AsyncStorage.getItem('userToken');
+        // setInitialRoute(token ? 'Main' : 'Login');
         const token = await AsyncStorage.getItem('userToken');
-        setInitialRoute(token ? 'Main' : 'Login');
+        const lastActiveTimeStr = await AsyncStorage.getItem('lastActiveTime');
+
+        if (token && lastActiveTimeStr) {
+          const lastActiveTime = parseInt(lastActiveTimeStr, 10);
+          const currentTime = new Date().getTime();
+          const tenDaysInMillis = 10 * 24 * 60 * 60 * 1000; // 10 days in milliseconds
+
+          if (currentTime - lastActiveTime > tenDaysInMillis) {
+            // More than 10 days inactive, clear session
+            await AsyncStorage.removeItem('userToken');
+            await AsyncStorage.removeItem('userID'); // Also clear userID
+            await AsyncStorage.removeItem('isProfession'); // And isProfession status
+            await AsyncStorage.removeItem('lastActiveTime');
+            setInitialRoute('Login');
+          } else {
+            // Active within 10 days, refresh last active time
+            await AsyncStorage.setItem('lastActiveTime', currentTime.toString());
+            setInitialRoute('Main');
+          }
+        } else {
+          // No token or no last active time, go to Login
+          setInitialRoute('Login');
+        }
       } catch (error) {
         console.error('Error checking token:', error);
         setInitialRoute('Login');

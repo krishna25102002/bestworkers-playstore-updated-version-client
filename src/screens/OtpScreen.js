@@ -15,7 +15,8 @@ const OtpScreen = () => {
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
 
-  const { email } = route.params || {};
+  // const { email } = route.params || {};
+  const { name, email, mobile, pin: userPin } = route.params || {}; // Renamed pin to userPin for clarity
 
   useEffect(() => {
     if (timer > 0) {
@@ -45,8 +46,14 @@ const OtpScreen = () => {
     setLoading(true);
     try {
       console.log("Verifying OTP:", otp, "for email:", email); // Debug log
-      const response = await verifyOtp({ email, otp });
-      
+      // Send all required data to the backend
+      const response = await verifyOtp({
+        name,
+        email,
+        mobile,
+        pin: userPin, // Send the pin received from route params
+        otp,
+      });
       if (response.success) {
         console.log("OTP verification successful:", response); // Debug log
         // Store token securely
@@ -68,7 +75,7 @@ const OtpScreen = () => {
   const handleResend = async () => {
     setResendLoading(true);
     try {
-      await resendOtp(email);
+      await resendOtp({email});
       setTimer(30);
       setResendDisabled(true);
       setOtp('');
@@ -116,6 +123,9 @@ const OtpScreen = () => {
                 value={otp}
                 onChangeText={handleOtpChange}
               />
+               <Text style={styles.spamNoteText}>
+                * If you don't see the OTP, please check your spam or junk folder.
+              </Text>
               {error ? <Text style={styles.errorText}>{error}</Text> : null}
             </View>
             

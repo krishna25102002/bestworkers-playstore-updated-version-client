@@ -137,7 +137,10 @@ const ProfessionalDetailScreen = ({ navigation, route }) => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Service Details</Text>
           {renderDetailItem('category', 'Category', professional.serviceCategory)}
-          {renderDetailItem('build', 'Service', professional.service)}
+          {renderDetailItem('build', 'Service', professional.service)}        
+          {/* {renderDetailItem('designation', 'Designation', professional.designation )} */}
+          {professional.service === 'others' &&
+            renderDetailItem('badge', 'Designation', professional.designation)}
           {renderDetailItem('description', 'Description', professional.professionDescription)}
           {renderDetailItem('help-outline', 'BestWorkers Approved', professional.needSupport ? 'Yes' : 'No')}
         </View>

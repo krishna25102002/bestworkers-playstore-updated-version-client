@@ -121,7 +121,7 @@ const SideMenu = ({ isVisible, onClose, navigation, setIsLoggedIn }) => {
               <Text style={styles.menuItemText}>Logout</Text>
             </TouchableOpacity>
 
-            <Text style={styles.versionText}>Version 1.0.0</Text>
+            <Text style={styles.versionText}>Version 2.0</Text>
           </ScrollView>
         </View>
 
