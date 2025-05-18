@@ -188,11 +188,11 @@ const HomeScreen = ({ navigation }) => {
               />
             </View>
             <Text style={styles.categoryTitle}>{category}</Text>
-            <Icon
+            {/* <Icon
               name="arrow-forward-ios"
               size={20}
               color={styles.categoryIconContainer.backgroundColor}
-            />
+            /> */}
           </TouchableOpacity>
         </View>
       );
