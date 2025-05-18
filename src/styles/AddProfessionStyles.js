@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   header: {
-    fontSize: 28,
+    fontSize: 20,
     fontWeight: '700',
     color: '#333',
     flex: 1,
