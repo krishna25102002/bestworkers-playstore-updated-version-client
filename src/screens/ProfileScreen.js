@@ -51,11 +51,11 @@ const ProfileScreen = ({navigation}) => {
 
   const fetchUserData = useCallback(async () => {
     if (isLoggingOut) {
-      // console.log('ProfileScreen: Logout in progress, skipping fetchUserData.');
+      console.log('ProfileScreen: fetchUserData - Logout in progress, skipping.');
       return;
     }
-    console.log('ProfileScreen: Attempting to fetch user data...');
-    setLoading(true);
+    console.log('ProfileScreen: fetchUserData - Attempting to fetch, setting loading true.');
+    setLoading(true); // Ensure loading is true at the start of an attempt
     setError(null); // Clear previous errors
     try {
       const storedUserId = await AsyncStorage.getItem('userID');
@@ -64,10 +64,12 @@ const ProfileScreen = ({navigation}) => {
       }
       const response = await getUserProfile();
       if (response.success) {
+        console.log('ProfileScreen: fetchUserData - API call successful.');
         if (!isLoggingOut) setUserData(response.data); // Check flag before setting data
       } else {
         // This handles cases where api.js might return { success: false, error: '...', status: ... }
         const errorMessage = response.error || 'Failed to fetch user data';
+        console.log('ProfileScreen: fetchUserData - API call not successful:', errorMessage, 'Status:', response.status);
         if (!isLoggingOut) setError(errorMessage);
         if (response.status === 401) {
           console.error('ProfileScreen: Unauthorized (API response indicated 401). Triggering logout.');
@@ -76,7 +78,7 @@ const ProfileScreen = ({navigation}) => {
       }
     } catch (err) {
       if (isLoggingOut) return; // Don't process error if already logging out
-      console.error('Error fetching user data in ProfileScreen (catch block):', err.message);
+      console.error('ProfileScreen: fetchUserData - Error caught:', err.message, 'Response status:', err.response?.status);
       if (err.response && err.response.status === 401) {
         if (!isLoggingOut) setError('Your session has expired. Please log in again.');
         console.error('ProfileScreen: Unauthorized (HTTP 401 caught). Triggering logout.');
@@ -87,6 +89,7 @@ const ProfileScreen = ({navigation}) => {
       }
     } finally {
       if (!isLoggingOut) { // Only update loading state if not in the process of logging out
+        console.log('ProfileScreen: fetchUserData - Finally block, setting loading false.');
         setLoading(false);
         setRefreshing(false);
       }
@@ -96,20 +99,21 @@ const ProfileScreen = ({navigation}) => {
   const checkProfessionStatus = useCallback(async () => {
     if (isLoggingOut) return;
     try {
+      console.log('ProfileScreen: checkProfessionStatus - Checking.');
       const professionStatus = await AsyncStorage.getItem('isProfession');
       if (!isLoggingOut) setIsProfession(professionStatus === 'true');
     } catch (err) {
-      console.error('Error checking profession status:', err);
+      console.error('ProfileScreen: checkProfessionStatus - Error:', err);
     }
   }, [isLoggingOut]);
 
   const initializeData = useCallback(async () => {
     if (isLoggingOut) {
-      // console.log('ProfileScreen: Logout in progress, skipping initializeData.');
+      console.log('ProfileScreen: initializeData - Logout in progress, skipping.');
       return;
     }
-    console.log('ProfileScreen: Initializing data...');
-    await checkProfessionStatus();
+    console.log('ProfileScreen: initializeData - Starting...');
+    await checkProfessionStatus(); // This might set isProfession
     await fetchUserData();
   }, [checkProfessionStatus, fetchUserData, isLoggingOut]);
 
@@ -130,7 +134,7 @@ const ProfileScreen = ({navigation}) => {
       }
     });
     return unsubscribe;
-  }, [navigation, initializeData. isLoggingOut]); // Removed isLoggingOut from here to ensure focus always tries to init
+  }, [navigation, initializeData, isLoggingOut]); // Corrected dependency array
 
 
   const onRefresh = useCallback(() => {
