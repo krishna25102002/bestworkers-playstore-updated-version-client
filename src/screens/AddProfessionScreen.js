@@ -112,7 +112,7 @@ const AddProfessionScreen = ({navigation}) => {
         (valid = false);
     if (!serviceName)
       (newErrors.serviceName = 'Service name is required'), (valid = false);
-    if (serviceName === 'others' && !designation.trim()) // Validate designation if 'others'
+    if (serviceName === 'Explore others' && !designation.trim()) // Validate designation if 'Explore others'
       (newErrors.designation = 'Designation is required for "Others" service'), (valid = false);
     if (!experience)
       (newErrors.experience = 'Experience is required'), (valid = false);
@@ -143,7 +143,7 @@ const AddProfessionScreen = ({navigation}) => {
           city,
           serviceCategory,
           serviceName,
-          designation: serviceName === 'others' ? designation : '', // Only send designation if serviceName is 'others'
+          designation: serviceName === 'Explore others' ? designation : '', // Only send designation if serviceName is 'Explore others'
           experience,
           servicePrice: parseFloat(servicePrice), // Ensure servicePrice is a number
           priceUnit,
@@ -405,7 +405,7 @@ const AddProfessionScreen = ({navigation}) => {
             onBlur={() => setIsFocus(false)}
             onChange={item => {
               setServiceName(item.value);
-              if (item.value !== 'others') {
+              if (item.value !== 'Explore others') {
                 setDesignation(''); // Clear designation if not 'others'
               }
               setIsFocus(false);
@@ -424,7 +424,7 @@ const AddProfessionScreen = ({navigation}) => {
           )}
         </View>
         
-        {serviceName === 'others' && (
+        {serviceName === 'Explore others' && (
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Designation*</Text>
               <View style={styles.inputWithIconContainer}>

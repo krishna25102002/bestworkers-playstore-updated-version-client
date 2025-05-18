@@ -521,7 +521,7 @@ export const serviceCategories = [
   { label: 'Banking & Office Jobs', value: 'Banking & Office Jobs' },
   { label: 'North Indian Workers', value: 'North Indian Workers' },
   { label: 'Village & Agricultural Workers', value: 'Village & Agricultural Workers' },
-  { label: 'others', value: 'others' },
+  { label: 'Explore others', value: 'Explore others' },
 ];
 
 // Service names by category
@@ -609,8 +609,8 @@ export const serviceNames = {
     { label: 'Field Worker', value: 'Field Worker' }, // Changed from 'Village Field Workers'
     { label: 'Farm Laborer', value: 'Farm Laborer' }, // Changed from 'Farm Laborers'
   ],
-  'others': [
-    { label: 'Others', value: 'others' }, // Changed from 'Others'
+  'Explore others': [
+    { label: 'Explore others', value: 'Explore others' },
   ],
 };
 

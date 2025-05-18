@@ -347,6 +347,25 @@ const ProfileScreen = ({navigation}) => {
         )}
 
         <View style={styles.actionsContainer}>
+        <TouchableOpacity
+            style={styles.actionButton}
+            // onPress={() => navigation.navigate('EditProfile', { userData })}>
+            onPress={() => navigation.navigate('AddProfession', { editMode: true, existingData: userData })}>
+            <View
+              style={[
+                styles.actionIconContainer,
+                {backgroundColor: '#E0F2F7'}, // A light blue/teal for edit
+              ]}>
+              <Icon name="create-outline" size={24} color="#00796B" />
+            </View>
+            <View style={styles.actionTextContainer}>
+              <Text style={[styles.actionTitle, {color: '#00796B'}]}>
+                Edit Profile
+              </Text>
+              <Text style={styles.actionSubtitle}>Update your personal details</Text>
+            </View>
+            <Icon name="chevron-forward" size={22} color="#A0A0A0" />
+          </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton} onPress={handleLogout}>
             <View
               style={[

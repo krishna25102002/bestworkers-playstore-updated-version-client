@@ -141,6 +141,31 @@ export const styles = StyleSheet.create({
   clearIcon: {
     padding: 5,
   },
+  // In your HomeStyles.js
+// ... other styles
+serviceItem: {
+  flexDirection: 'row',
+  justifyContent: 'space-between', // This will push text to left and (count + icon) to right
+  alignItems: 'center',
+  paddingVertical: 15,
+  paddingHorizontal: 20,
+  borderBottomWidth: 1,
+  borderBottomColor: '#eee', // Or your theme's separator color
+},
+serviceText: {
+  fontSize: 16,
+  color: '#333', // Or your theme's text color
+},
+serviceRightContainer: { // Optional: if you want to group count and icon
+  flexDirection: 'row',
+  alignItems: 'center',
+},
+serviceCount: {
+  fontSize: 14,
+  color: '#777', // Or your theme's secondary text color
+  marginRight: 8, // Space between count and arrow icon
+},
+// ... other styles
 });
 
 export const categoryIcons = {
