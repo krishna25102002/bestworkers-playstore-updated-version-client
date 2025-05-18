@@ -349,7 +349,6 @@ const ProfileScreen = ({navigation}) => {
         <View style={styles.actionsContainer}>
         <TouchableOpacity
             style={styles.actionButton}
-            // onPress={() => navigation.navigate('EditProfile', { userData })}>
             onPress={() => navigation.navigate('AddProfession', { editMode: true, existingData: userData })}>
             <View
               style={[

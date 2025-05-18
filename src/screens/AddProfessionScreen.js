@@ -1,7 +1,4 @@
 // c:\Users\kd1812\Desktop\BW NEW\BestWorkers_Client\src\screens\AddProfessionScreen.js
-// No changes needed in this file if you implement Option 1 (backend derives user from token)
-// and your api.js is updated accordingly.
-
 import React, {useState, useEffect} from 'react';
 import {
   Text,
@@ -26,9 +23,11 @@ import {
   serviceNames,
   experienceLevels,
   priceUnits,
-} from '../data/staticData';
-import {addProfession, getUserProfile} from '../services/api';
+} from '../data/staticData'; // Assuming your staticData.js has all these
+import {addProfession, getUserProfile, updateProfessionalProfile} from '../services/api'; // Added updateProfessionalProfile
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRoute } from '@react-navigation/native'; // To get route params
+
 
 const AddProfessionScreen = ({navigation}) => {
   // Form state
@@ -53,39 +52,86 @@ const AddProfessionScreen = ({navigation}) => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false); // Added isLoading state
 
-  // Fetch user profile on component mount
+  const route = useRoute();
+  const { editMode, existingData } = route.params || {};
+
+  const screenTitle = editMode ? "Edit Professional Profile" : "Add Your Profession";
+  const submitButtonText = editMode ? "Update Profile" : "Submit";
+
+  // Populate form if in edit mode or fetch user profile for add mode
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const response = await getUserProfile();
-        if (response.success && response.data) {
-          const userData = response.data;
-          setName(userData.name || '');
-          setEmail(userData.email || '');
-          setMobileNo(userData.mobile || '');
-        } else {
-          console.error('Failed to fetch user profile data or data is not in expected format:', response);
-          // Optionally, handle this error, e.g., show a message or navigate away
-        }
-      } catch (error) {
-        console.error('Error fetching user profile in AddProfessionScreen:', error);
-        // Handle error, e.g., show an alert or navigate to login if 401
-        if (error.response && error.response.status === 401) {
-          Alert.alert("Session Expired", "Please log in again.");
-          // navigation.replace('Login'); // Or your logout logic
+    if (editMode && existingData) {
+      console.log("Edit Mode: Populating form with existing data", existingData);
+      // Set basic fields
+      setName(existingData.name || '');
+      setEmail(existingData.email || '');
+      setMobileNo(existingData.mobileNo || existingData.mobile || ''); // Check for both mobileNo and mobile
+      setSecondaryMobileNo(existingData.secondaryMobileNo || '');
+      setDesignation(existingData.designation || '');
+      setExperience(existingData.experience || '');
+      setServicePrice(existingData.servicePrice ? String(existingData.servicePrice) : '');
+      setPriceUnit(existingData.priceUnit || 'per hour');
+      setNeedSupport(existingData.needSupport || false);
+      setProfessionDescription(existingData.professionDescription || '');
+
+      // Set dropdown values - this will trigger re-filtering of dependent dropdowns
+      // Ensure these are set *after* the basic fields if there are any dependencies
+      // that might clear them.
+      if (existingData.state) {
+        setState(existingData.state);
+        if (existingData.district) {
+          setDistrict(existingData.district);
+          if (existingData.city) setCity(existingData.city);
         }
       }
-    };
+      if (existingData.serviceCategory) {
+        setServiceCategory(existingData.serviceCategory);
+        if (existingData.serviceName) setServiceName(existingData.serviceName);
+      }
+      // isAgreed is usually not part of existingData for editing, but you can set it if needed
+    } else if (!editMode) {
+      const fetchUserProfileForAdd = async () => {
+        try {
+          const response = await getUserProfile();
+          if (response.success && response.data) {
+            const userData = response.data;
+            setName(userData.name || '');
+            setEmail(userData.email || '');
+            setMobileNo(userData.mobile || '');
+          } else {
+            console.error('Failed to fetch user profile data or data is not in expected format:', response);
+            Alert.alert("Error", "Could not load your basic profile information.");
+          }
+        } catch (error) {
+          console.error('Error fetching user profile in AddProfessionScreen (add mode):', error);
+          if (error.response && error.response.status === 401) {
+            Alert.alert("Session Expired", "Please log in again.");
+            navigation.replace('Login');
+          } else {
+            Alert.alert("Error", "An error occurred while fetching your profile.");
+          }
+        }
+      };
+      fetchUserProfileForAdd();
+    }
+  }, [editMode, existingData, navigation]);
 
-    fetchUserProfile();
-  }, []);
+  // Memoize filtered data to prevent unnecessary re-renders
+  const filteredDistricts = React.useMemo(() => {
+    console.log("Filtering districts for state:", state);
+    return state ? districts.filter(item => item.state === state) : [];
+  }, [state]);
 
-  // Filter districts and cities
-  const filteredDistricts = districts.filter(item => item.state === state);
-  const filteredCities = district ? cities[district] || [] : [];
-  const filteredServiceNames = serviceCategory
-    ? serviceNames[serviceCategory] || []
-    : [];
+  const filteredCities = React.useMemo(() => {
+    console.log("Filtering cities for district:", district);
+    return district && state ? cities[district] || [] : []; // Ensure state is also present for context
+  }, [district, state]);
+
+  const filteredServiceNames = React.useMemo(() => {
+    console.log("Filtering service names for category:", serviceCategory);
+    return serviceCategory ? serviceNames[serviceCategory] || [] : [];
+  }, [serviceCategory]);
+
 
   // Form validation
   const validateForm = () => {
@@ -121,7 +167,7 @@ const AddProfessionScreen = ({navigation}) => {
     else if (isNaN(parseFloat(servicePrice))) // Check if it's a valid number
       (newErrors.servicePrice = 'Service price must be a number'),
         (valid = false);
-    if (!isAgreed)
+    if (!isAgreed && !editMode) // Agreement only required for new additions
       (newErrors.isAgreed = 'You must agree to the terms'), (valid = false);
 
     setErrors(newErrors);
@@ -152,14 +198,22 @@ const AddProfessionScreen = ({navigation}) => {
           // isAgreed is for client-side validation, not usually sent to backend
         };
 
-        await addProfession(formData);
-        await AsyncStorage.setItem('isProfession', 'true');
-        setShowSuccessModal(true);
+        if (editMode) {
+          await updateProfessionalProfile(formData); // Assuming your API takes all fields
+          Alert.alert("Success", "Profile updated successfully!");
+          navigation.goBack(); // Or navigate to ProfileScreen and refresh
+        } else {
+          await addProfession(formData);
+          await AsyncStorage.setItem('isProfession', 'true');
+          setShowSuccessModal(true); // Show success modal only for new additions
+        }
+
       } catch (error) {
-        console.error('Error submitting profession:', error.response ? error.response.data : error.message);
+        const action = editMode ? "updating" : "submitting";
+        console.error(`Error ${action} profession:`, error.response ? error.response.data : error.message);
         Alert.alert(
-          'Submission Error',
-          error.response?.data?.error || error.message || 'Failed to submit profession details. Please try again.'
+          `${editMode ? 'Update' : 'Submission'} Error`,
+          error.response?.data?.error || error.message || `Failed to ${action} profession details. Please try again.`
         );
       } finally {
         setIsLoading(false); // Stop loading
@@ -178,7 +232,7 @@ const AddProfessionScreen = ({navigation}) => {
             style={styles.backButton}>
             <AntDesign name="arrowleft" size={24} color="#1E40AF" />
           </TouchableOpacity>
-          <Text style={styles.header}>Add Your Profession</Text>
+          <Text style={styles.header}>{screenTitle}</Text>
         </View>
 
         {/* Personal Information */}
@@ -189,8 +243,7 @@ const AddProfessionScreen = ({navigation}) => {
             style={[styles.input, {backgroundColor: '#F1F5F9'}]}
             placeholder="Enter your full name"
             value={name}
-            // onChangeText={setName} // Name is fetched, not editable
-            editable={false}
+            editable={false} // Typically name is not editable here, fetched from user profile
           />
           {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
         </View>
@@ -201,8 +254,7 @@ const AddProfessionScreen = ({navigation}) => {
             placeholder="Enter your email"
             keyboardType="email-address"
             value={email}
-            // onChangeText={setEmail} // Email is fetched, not editable
-            editable={false}
+            editable={false} // Email is often not editable here
           />
           {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
         </View>
@@ -214,8 +266,7 @@ const AddProfessionScreen = ({navigation}) => {
             keyboardType="phone-pad"
             maxLength={10}
             value={mobileNo}
-            // onChangeText={setMobileNo} // Mobile is fetched, not editable
-            editable={false}
+            editable={false} // Mobile is generally not editable here, fetched from user profile
           />
           {errors.mobileNo && (
             <Text style={styles.errorText}>{errors.mobileNo}</Text>
@@ -223,7 +274,7 @@ const AddProfessionScreen = ({navigation}) => {
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Secondary Mobile No</Text>
-          <TextInput
+          <TextInput // Secondary mobile is usually editable
             style={styles.input}
             placeholder="Enter secondary mobile number"
             keyboardType="phone-pad"
@@ -258,8 +309,8 @@ const AddProfessionScreen = ({navigation}) => {
             onBlur={() => setIsFocus(false)}
             onChange={item => {
               setState(item.value);
-              setDistrict('');
-              setCity('');
+              setDistrict(''); // Reset district when state changes
+              setCity('');     // Reset city when state changes
               setIsFocus(false);
             }}
             renderLeftIcon={() => (
@@ -289,12 +340,12 @@ const AddProfessionScreen = ({navigation}) => {
             placeholder={!isFocus ? 'Select district' : '...'}
             searchPlaceholder="Search..."
             value={district}
-            disable={!state} // Disable if state is not selected
+            disable={!state && !editMode} // Only disable if not in edit mode and state is not selected
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
               setDistrict(item.value);
-              setCity('');
+              setCity(''); // Reset city when district changes
               setIsFocus(false);
             }}
             renderLeftIcon={() => (
@@ -326,7 +377,7 @@ const AddProfessionScreen = ({navigation}) => {
             placeholder={!isFocus ? 'Select city' : '...'}
             searchPlaceholder="Search..."
             value={city}
-            disable={!district} // Disable if district is not selected
+            disable={!district && !editMode} // Only disable if not in edit mode and district is not selected
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
@@ -367,8 +418,8 @@ const AddProfessionScreen = ({navigation}) => {
             onBlur={() => setIsFocus(false)}
             onChange={item => {
               setServiceCategory(item.value);
-              setServiceName('');
-              setDesignation('');
+              setServiceName(''); // Reset service name
+              setDesignation(''); // Reset designation
               setIsFocus(false);
             }}
             renderLeftIcon={() => (
@@ -400,13 +451,13 @@ const AddProfessionScreen = ({navigation}) => {
             placeholder={!isFocus ? 'Select service name' : '...'}
             searchPlaceholder="Search..."
             value={serviceName}
-            disable={!serviceCategory} // Disable if category not selected
+            disable={!serviceCategory && !editMode} // Only disable if not in edit mode and category not selected
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={item => {
               setServiceName(item.value);
               if (item.value !== 'Explore others') {
-                setDesignation(''); // Clear designation if not 'others'
+                setDesignation(''); // Clear designation if not 'Explore others'
               }
               setIsFocus(false);
             }}
@@ -484,7 +535,7 @@ const AddProfessionScreen = ({navigation}) => {
           <Text style={styles.label}>Service Price*</Text>
           <View style={styles.priceContainer}>
             <TextInput
-              style={[styles.input, styles.priceInput, errors.servicePrice && styles.inputError]}
+              style={[styles.input, styles.priceInput, errors.servicePrice && styles.inputError]} // Assuming inputError style exists
               placeholder="Enter price"
               keyboardType="numeric"
               value={servicePrice}
@@ -558,21 +609,24 @@ const AddProfessionScreen = ({navigation}) => {
             onChangeText={setProfessionDescription}
           />
         </View>
-        <View style={styles.checkboxContainer}>
-          <TouchableOpacity
-            style={styles.checkbox}
-            onPress={() => setIsAgreed(!isAgreed)}>
-            {isAgreed ? (
-              <AntDesign name="checkcircle" size={24} color="#1E40AF" />
-            ) : (
-              <AntDesign name="checkcircleo" size={24} color="#94A3B8" />
-            )}
-          </TouchableOpacity>
-          <Text style={styles.checkboxLabel}>
-            I acknowledge every detail given here is true
-          </Text>
-        </View>
-        {errors.isAgreed && (
+        
+        {!editMode && ( // Only show agreement checkbox if not in edit mode
+            <View style={styles.checkboxContainer}>
+            <TouchableOpacity
+                style={styles.checkbox}
+                onPress={() => setIsAgreed(!isAgreed)}>
+                {isAgreed ? (
+                <AntDesign name="checkcircle" size={24} color="#1E40AF" />
+                ) : (
+                <AntDesign name="checkcircleo" size={24} color="#94A3B8" />
+                )}
+            </TouchableOpacity>
+            <Text style={styles.checkboxLabel}>
+                I acknowledge every detail given here is true
+            </Text>
+            </View>
+        )}
+        {errors.isAgreed && !editMode && ( // Only show error if not in edit mode
           <Text style={styles.errorText}>{errors.isAgreed}</Text>
         )}
 
@@ -587,7 +641,7 @@ const AddProfessionScreen = ({navigation}) => {
             {isLoading ? (
               <ActivityIndicator size="small" color="#FFFFFF" />
             ) : (
-              <Text style={styles.submitButtonText}>Submit</Text>
+              <Text style={styles.submitButtonText}>{submitButtonText}</Text>
             )}
           </LinearGradient>
         </TouchableOpacity>

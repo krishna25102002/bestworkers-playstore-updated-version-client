@@ -96,6 +96,23 @@ export const updateUserProfile = async userData => {
   }
 };
 
+// This is for updating the extended professional profile details
+export const updateProfessionalProfile = async (professionData) => {
+  try {
+    // The interceptor will add the token.
+    // Backend's /professions/update (or similar) route should use req.user.id from the token.
+    // Ensure your backend has a PUT route like '/professions/me' or '/professions/:id' or '/users/profile/professional'
+    // that handles updating the professional details for the authenticated user.
+    const response = await api.put('/professions/me', professionData); // Example endpoint, adjust to your backend
+    return response.data;
+  } catch (error) {
+    console.error('Update Professional Profile API error:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+};
+
+
+
 export const changeUserPin = async pinData => {
   try {
     // Assuming /users/change-pin is a protected route
