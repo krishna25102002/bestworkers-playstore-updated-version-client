@@ -15,7 +15,7 @@ const COLORS = {
 
 export const styles = StyleSheet.create({
   safeArea: {
-    flex: 1,
+    flex: 2,
     backgroundColor: COLORS.white,
   },
   header: {
