@@ -20,12 +20,14 @@ import { getProfessionalsByService } from '../services/api';
 
 const HomeScreen = ({ navigation }) => {
   const [menuVisible, setMenuVisible] = useState(false);
-  const [professionalCounts, setProfessionalCounts] = useState({});
+  const [professionalCounts, setProfessionalCounts] = useState({}); // Counts for individual services
+  const [categoryCounts, setCategoryCounts] = useState({});     // Counts for total in each category
+  const [loadingCounts, setLoadingCounts] = useState(true);     // Loading state for counts
   const [searchText, setSearchText] = useState('');
   const [expandedCategory, setExpandedCategory] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Assuming default to true, adjust as needed
   const [filteredCategories, setFilteredCategories] = useState(
-    Object.keys(serviceNames), // Include "others"
+    Object.keys(serviceNames),
   );
 
   useEffect(() => {
@@ -58,11 +60,12 @@ const HomeScreen = ({ navigation }) => {
       const categoryMatches = Object.keys(serviceNames).filter(category =>
         category.toLowerCase().includes(lowercasedSearch),
       );
-      const serviceMatches = Object.keys(serviceNames).filter(category =>
-        serviceNames[category].some(service =>
+      const serviceMatches = Object.keys(serviceNames).filter(category => {
+        // Ensure serviceNames[category] is an array before calling .some()
+        return Array.isArray(serviceNames[category]) && serviceNames[category].some(service =>
           service.label.toLowerCase().includes(lowercasedSearch),
-        ),
-      );
+        );
+      });
       const combinedMatches = [
         ...new Set([...categoryMatches, ...serviceMatches]),
       ];
@@ -79,7 +82,7 @@ const HomeScreen = ({ navigation }) => {
 
   const handleServicePress = (service) => {
     const categoryForService = Object.keys(serviceNames).find(category =>
-      serviceNames[category].some(s => s.value === service.value),
+      Array.isArray(serviceNames[category]) && serviceNames[category].some(s => s.value === service.value),
     );
     navigation.navigate('ServiceDetail', {
       service: service.value,
@@ -92,39 +95,61 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const fetchProfessionalCount = useCallback(async (serviceValue) => {
+    if (!serviceValue || serviceValue === 'Explore others') return 0; // Don't fetch for placeholder
     try {
       const response = await getProfessionalsByService(serviceValue);
-      return response.data.length; // Assuming response.data is an array of professionals
+      return response.data.length; 
     } catch (error) {
-      console.error(`Error fetching count for ${serviceValue}:`, error);
-      return 0; // Return 0 or some indicator of an error
+      console.error(`Error fetching count for ${serviceValue}:`, error.message);
+      return 0; 
     }
   }, []);
 
   useEffect(() => {
-    const fetchAllCounts = async () => {
-      const counts = {};
-      // Iterate over categories
-      for (const category in serviceNames) {
-        // Iterate over services within each category
-        if (Array.isArray(serviceNames[category])) { // Ensure it's an array
-            for (const service of serviceNames[category]) {
-                // Skip if service.value is undefined or for "Explore others" direct link
-                if (service.value && service.value !== 'Explore others') {
-                    counts[service.value] = await fetchProfessionalCount(service.value);
+    const fetchAllData = async () => {
+      setLoadingCounts(true);
+      const serviceLvlCounts = {};
+      const categoryLvlCounts = {};
+
+      console.log("HomeScreen: Fetching all counts...");
+
+      for (const categoryKey in serviceNames) {
+        let currentCategoryTotal = 0;
+
+        if (categoryKey.toLowerCase() === 'explore others') {
+          categoryLvlCounts[categoryKey] = 0; 
+          continue;
+        }
+
+        if (Array.isArray(serviceNames[categoryKey])) {
+            for (const service of serviceNames[categoryKey]) {
+                if (service.value) { // Ensure service.value exists
+                    const count = await fetchProfessionalCount(service.value);
+                    serviceLvlCounts[service.value] = count;
+                    currentCategoryTotal += count;
                 }
             }
         }
+        categoryLvlCounts[categoryKey] = currentCategoryTotal;
       }
-      setProfessionalCounts(counts);
+      setProfessionalCounts(serviceLvlCounts);
+      setCategoryCounts(categoryLvlCounts);
+      setLoadingCounts(false);
+      console.log("HomeScreen: Counts fetched:", { serviceLvlCounts, categoryLvlCounts });
     };
 
-    fetchAllCounts();
-  }, [serviceNames, fetchProfessionalCount]); // Re-fetch if serviceNames or fetchProfessionalCount changes
+    fetchAllData(); // Initial fetch
+
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('HomeScreen focused, re-fetching counts...');
+      fetchAllData(); // Re-fetch on focus
+    });
+
+    return unsubscribe; // Cleanup listener on unmount
+  }, [navigation, fetchProfessionalCount]); // serviceNames is static, so removed from deps
 
 
   const renderServiceItem = ({ item }) => {
-    // Get the count from the state, default to 0 if not found
     const count = professionalCounts[item.value] !== undefined ? professionalCounts[item.value] : 0;
   
     return (
@@ -133,11 +158,11 @@ const HomeScreen = ({ navigation }) => {
         onPress={() => handleServicePress(item)}>
         <Text style={styles.serviceText}>{item.label}</Text>
         <View style={styles.serviceRightContainer}>
-            <Text style={styles.serviceCount}>({count})</Text>
+            <Text style={styles.serviceCount}>({loadingCounts && count === 0 ? '...' : count})</Text>
             <Icon
                 name="arrow-forward-ios"
                 size={16}
-                color={styles.categoryIconContainer.backgroundColor} // Or your desired color
+                color={styles.categoryIconContainer.backgroundColor} 
             />
         </View>
       </TouchableOpacity>
@@ -146,35 +171,32 @@ const HomeScreen = ({ navigation }) => {
 
   const renderCategoryItem = ({ item: category }) => {
     const isOthersCategory = category.toLowerCase() === 'explore others';
+    const categoryTotal = categoryCounts[category] !== undefined ? categoryCounts[category] : 0;
 
     if (isOthersCategory) {
-      // Handle "Explore others" category as a direct link
       return (
         <View style={styles.categorySection}>
           <TouchableOpacity
             style={styles.categoryHeader}
-            onPress={() => handleServicePress({ label: 'Explore others', value: 'Explore others' })} // Directly navigate
+            onPress={() => handleServicePress({ label: 'Explore others', value: 'Explore others' })}
             activeOpacity={0.7}>
             <View style={styles.categoryIconContainer}>
               <Icon
-                name={categoryIcons[category] || 'explore'} // Default for "others"
+                name={categoryIcons[category] || 'explore'}
                 size={24}
                 color="white"
               />
             </View>
             <Text style={styles.categoryTitle}>{category}</Text>
-            {/* Use a navigation arrow for "others" category */}
             <Icon
               name="arrow-forward-ios"
-              size={20} // Adjusted size for this icon
+              size={20}
               color={styles.categoryIconContainer.backgroundColor}
             />
           </TouchableOpacity>
-          {/* No FlatList for services here as it's a direct link */}
         </View>
       );
     } else {
-      // Handle other categories with expand/collapse
       return (
         <View style={styles.categorySection}>
           <TouchableOpacity
@@ -188,7 +210,12 @@ const HomeScreen = ({ navigation }) => {
                 color="white"
               />
             </View>
-            <Text style={styles.categoryTitle}>{category}</Text>
+            <View style={styles.categoryTextAndCountContainer}>
+              <Text style={styles.categoryTitle}>{category}</Text>
+              <Text style={styles.categoryCountText}>
+                ({loadingCounts ? '...' : categoryTotal})
+              </Text>
+            </View>
             <Icon
               name={
                 expandedCategory === category
@@ -200,13 +227,13 @@ const HomeScreen = ({ navigation }) => {
             />
           </TouchableOpacity>
 
-          {expandedCategory === category && (
+          {expandedCategory === category && Array.isArray(serviceNames[category]) && (
             <FlatList
               data={serviceNames[category]}
               renderItem={renderServiceItem}
               keyExtractor={item => item.value}
               style={styles.servicesList}
-              scrollEnabled={false} // Important if this FlatList is inside a ScrollView
+              scrollEnabled={false}
             />
           )}
         </View>
@@ -221,7 +248,6 @@ const HomeScreen = ({ navigation }) => {
         barStyle="light-content"
       />
 
-      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => setMenuVisible(true)}>
           <Icon name="menu" size={28} color="white" />
@@ -229,7 +255,6 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.headerTitle}>Job Services</Text>
       </View>
 
-      {/* Search Bar */}
       <View style={styles.searchContainer}>
         <Icon name="search" size={24} style={styles.searchIcon} />
         <TextInput
@@ -249,7 +274,6 @@ const HomeScreen = ({ navigation }) => {
         ) : null}
       </View>
 
-      {/* Main Content */}
       {filteredCategories.length > 0 ? (
         <FlatList
           data={filteredCategories}
@@ -273,18 +297,18 @@ const HomeScreen = ({ navigation }) => {
         </View>
       )}
 
-      {/* Side Menu */}
       <SideMenu
         isVisible={menuVisible}
         onClose={() => setMenuVisible(false)}
         navigation={navigation}
-        setIsLoggedIn={setIsLoggedIn}
+        setIsLoggedIn={setIsLoggedIn} // You might need to pass the actual setIsLoggedIn function if used in SideMenu
       />
     </SafeAreaView>
   );
 };
 
 export default HomeScreen;
+
 
 
 // import React, { useState, useEffect } from 'react';

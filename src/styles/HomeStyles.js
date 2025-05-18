@@ -94,12 +94,18 @@ export const styles = StyleSheet.create({
     marginRight: 15,
   },
   categoryTitle: {
-    flex: 1,
+    // flex: 1,
     fontSize: 18,
     fontWeight: '600',
     color: COLORS.text,
     fontFamily: 'Roboto-Medium',
+    flexShrink: 1, // Allow title to shrink if categoryTextAndCountContainer is constrained
+    marginRight: 5, // Add a small margin between title and count
+    // Add these to ensure single line and ellipsis for very long titles
+    numberOfLines: 1,
+    ellipsizeMode: 'tail',
   },
+
   servicesList: {
     borderTopWidth: 1,
     borderTopColor: COLORS.gray,
@@ -166,6 +172,19 @@ serviceCount: {
   marginRight: 8, // Space between count and arrow icon
 },
 // ... other styles
+categoryTextAndCountContainer: { // New style for title and category count
+  flex: 1, // Allows this container to take available space
+  flexDirection: 'row',
+  alignItems: 'center', // Vertically align title and count
+  marginRight: 8, // Add some margin to prevent overlap with the arrow icon
+  overflow: 'hidden',
+},
+categoryCountText: { // New style for the category count
+  // marginLeft: 8,
+  fontSize: 15,
+  fontWeight: '500',
+  color: COLORS.darkGray, 
+},
 });
 
 export const categoryIcons = {
