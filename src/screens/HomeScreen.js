@@ -258,13 +258,19 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
         ) : null}
       </View>
-
-      {loadingCounts && filteredCategories.length === Object.keys(serviceNames).length ? (
+            {/* Show full page loader only if professionalCounts is empty, indicating very first load phase */}
+      {/* {loadingCounts && Object.keys(professionalCounts).length === 0 && Object.keys(categoryCounts).length === 0 ? (
         <View style={styles.fullPageLoaderContainer}>
             <ActivityIndicator size="large" color={styles.categoryIconContainer.backgroundColor || '#2E5BFF'} />
             {/* <Text style={styles.fullPageLoaderText}>Loading Categories...</Text> */}
-        </View>
-      ) : filteredCategories.length > 0 ? (
+            {/* <Text style={styles.fullPageLoaderText}>Loading Categories...</Text> */}
+        {/* </View>  */}
+
+       {loadingCounts && filteredCategories.length === Object.keys(serviceNames).length ? (
+        <View style={styles.fullPageLoaderContainer}>
+            <ActivityIndicator size="large" color={styles.categoryIconContainer.backgroundColor || '#2E5BFF'} />
+            {/* <Text style={styles.fullPageLoaderText}>Loading Categories...</Text> */}
+        </View> ) : filteredCategories.length > 0 ? (
         <FlatList
           data={filteredCategories.filter(cat => cat.toLowerCase() !== 'explore others')}
           renderItem={renderCategoryItem}
