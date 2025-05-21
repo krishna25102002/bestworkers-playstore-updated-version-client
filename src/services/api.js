@@ -3,8 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const api = axios.create({
-  //baseURL: 'http://192.168.1.4:5000/api', // Your local IP
-  baseURL: 'https://bw-backends-v-2-0.onrender.com/api', // Your deployed server
+  baseURL: 'http://192.168.1.4:5000/api', // Your local IP
+  //baseURL: 'https://bw-backends-v-2-0.onrender.com/api', // Your deployed server
   timeout: 10000, // 10 seconds
   headers: {
     'Content-Type': 'application/json',
@@ -146,17 +146,32 @@ export const addProfession = async (professionData) => {
   }
 };
 
-export const getProfessionalsByService = async (serviceName) => {
+export const getProfessionalsByService = async (serviceName, serviceCategory = null) => {
   try {
-    // This is likely a public route, so token might not be strictly necessary,
-    // but the interceptor will add it if present, which is usually harmless.
-    const response = await api.get(`/professions?serviceName=${encodeURIComponent(serviceName)}`);
+    let url = `/professions?serviceName=${encodeURIComponent(serviceName)}`;
+    if (serviceCategory) {
+      url += `&serviceCategory=${encodeURIComponent(serviceCategory)}`;
+    }
+    console.log("API.js: Calling URL:", url); // Add this log
+    const response = await api.get(url);
     return response.data;
   } catch (error) {
-    console.error('Get Professionals API error:', error.response ? error.response.data : error.message);
+    console.error('Get Professionals by Service/Category API error:', error.response ? error.response.data : error.message);
     throw error;
   }
 };
+
+// export const getProfessionalsByService = async (serviceName) => {
+//   try {
+//     // This is likely a public route, so token might not be strictly necessary,
+//     // but the interceptor will add it if present, which is usually harmless.
+//     const response = await api.get(`/professions?serviceName=${encodeURIComponent(serviceName)}`);
+//     return response.data;
+//   } catch (error) {
+//     console.error('Get Professionals API error:', error.response ? error.response.data : error.message);
+//     throw error;
+//   }
+// };
 
 export default api;
 

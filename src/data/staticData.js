@@ -533,7 +533,9 @@ export const serviceNames = {
     { label: 'Washing Machine Service', value: 'Washing Machine Service' },
     { label: 'TV Service', value: 'TV Service' },
     { label: 'Painter', value: 'Painter' }, // Changed from 'Painters' for consistency
-    { label: 'Gardener', value: 'Gardener' }, 
+    { label: 'Gardener', value: 'Gardener' },
+    { label: 'Others', value: 'Explore others' },
+    
     // Changed from 'Garden Maintainer' for clarity
   ],
   'Mechanics & Vehicle Services': [
@@ -541,6 +543,7 @@ export const serviceNames = {
     { label: 'Two-Wheeler Mechanic', value: 'Two-Wheeler Mechanic' },
     { label: 'Car Mechanic', value: 'Car Mechanic' },
     { label: 'Lorry/Bus Mechanic', value: 'Lorry/Bus Mechanic' },
+    { label: 'Others', value: 'Explore others' },
   ],
   'Construction & Skilled Labor': [
     { label: 'Mason', value: 'Mason' }, // Changed from 'Masons' for consistency
@@ -548,48 +551,58 @@ export const serviceNames = {
     { label: 'Welder', value: 'Welder' }, // Changed from 'Welders'
     { label: 'Tiles Worker', value: 'Tiles Worker' }, // Changed from 'Tiles Workers'
     { label: 'Lathe Turner', value: 'Lathe Turner' }, // Changed from 'Lathe Turners'
-    { label: 'CNC/VMC Operator', value: 'CNC/VMC Operator' }, // Changed from 'CNC/VMC Operators'
+    { label: 'CNC/VMC Operator', value: 'CNC/VMC Operator' }, 
+     { label: 'Others', value: 'Explore others' },// Changed from 'CNC/VMC Operators'
   ],
   'Textile & Weaving Industry': [
     { label: 'Power Loom Weaver', value: 'Power Loom Weaver' }, // Changed from 'Power Loom Weavers'
     { label: 'Auto Loom Weaver', value: 'Auto Loom Weaver' }, // Changed from 'Auto Loom Weavers'
     { label: 'Spinning OE Worker', value: 'Spinning OE Worker' }, // Changed from 'Spinning OE Workers'
     { label: 'Garment Worker', value: 'Garment Worker' }, // Changed from 'Garment Workers'
-    { label: 'Tailor', value: 'Tailor' }, // Changed from 'Tailors'
+    { label: 'Tailor', value: 'Tailor' }, 
+     { label: 'Others', value: 'Explore others' },// Changed from 'Tailors'
   ],
   'Hotel & Catering Services': [
     { label: 'Tea Master', value: 'Tea Master' }, // Clarified from 'Tea Master Suppliers'
     { label: 'Chef', value: 'Chef' }, // Clarified from 'Hotel Master Suppliers'
-    { label: 'Waiter', value: 'Waiter' }, // Added for completeness
+    { label: 'Waiter', value: 'Waiter' }, 
+     { label: 'Others', value: 'Explore others' },// Added for completeness
   ],
   'Sales & Retail': [
     { label: 'Salesperson (Female)', value: 'Salesperson (Female)' }, // Changed from 'Sales Girls/Women'
-    { label: 'Salesperson (Male)', value: 'Salesperson (Male)' }, // Changed from 'Sales Men/Boys'
+    { label: 'Salesperson (Male)', value: 'Salesperson (Male)' }, 
+     { label: 'Others', value: 'Explore others' },// Changed from 'Sales Men/Boys'
   ],
   'Medical & Hospital Services': [
     { label: 'Lab Technician', value: 'Lab Technician' }, // Changed from 'Lab Technicians'
-    { label: 'Hospital Cleaner', value: 'Hospital Cleaner' }, // Changed from 'Hospital Cleaners'
+    { label: 'Hospital Cleaner', value: 'Hospital Cleaner' },
+     { label: 'Others', value: 'Explore others' }, // Changed from 'Hospital Cleaners'
   ],
   'Security & Maintenance': [
     { label: 'Security Guard', value: 'Security Guard' }, // Changed from 'Security Guards'
-    { label: 'Load Man', value: 'Load Man' }, // Changed from 'Load Men'
+    { label: 'Load Man', value: 'Load Man' }, 
+     { label: 'Others', value: 'Explore others' },// Changed from 'Load Men'
   ],
   'Logistics & Delivery': [
     { label: 'Driver', value: 'Driver' }, // Changed from 'Drivers'
-    { label: 'Delivery Boy', value: 'Delivery Boy' }, // Changed from 'Delivery Boys'
+    { label: 'Delivery Boy', value: 'Delivery Boy' }, 
+     { label: 'Others', value: 'Explore others' },// Changed from 'Delivery Boys'
   ],
   'Beauty & Grooming': [
     { label: "Men's Beautician", value: "Men's Beautician" }, // Changed from 'Men's Beauticians'
     { label: "Women's Beautician", value: "Women's Beautician" }, // Changed from 'Women's Beauticians'
-    { label: 'Barber', value: 'Barber' }, // Changed from 'Barbers'
+    { label: 'Barber', value: 'Barber' },
+     { label: 'Others', value: 'Explore others' }, // Changed from 'Barbers'
   ],
   'Teaching & Education': [
     { label: 'Teacher', value: 'Teacher' }, // Changed from 'Teachers'
-    { label: 'Sports Instructor', value: 'Sports Instructor' }, // Changed from 'Sports Instructors'
+    { label: 'Sports Instructor', value: 'Sports Instructor' },
+     { label: 'Others', value: 'Explore others' }, // Changed from 'Sports Instructors'
   ],
   'Banking & Office Jobs': [
     { label: 'Bank Staff', value: 'Bank Staff' },
-    { label: 'Office Clerk', value: 'Office Clerk' }, // Added for completeness
+    { label: 'Office Clerk', value: 'Office Clerk' }, 
+     { label: 'Others', value: 'Explore others' },// Added for completeness
   ],
   'North Indian Workers': [
     { label: 'Mason', value: 'Mason' },
@@ -603,13 +616,12 @@ export const serviceNames = {
     { label: 'Security Guard', value: 'Security Guard' },
     { label: 'Delivery Worker', value: 'Delivery Worker' },
     { label: 'Construction Worker', value: 'Construction Worker' },
+     { label: 'Others', value: 'Explore others' },
   ],
   'Village & Agricultural Workers': [
     { label: 'Field Worker', value: 'Field Worker' }, // Changed from 'Village Field Workers'
-    { label: 'Farm Laborer', value: 'Farm Laborer' }, // Changed from 'Farm Laborers'
-  ],
-  'Explore others': [
-    { label: 'Explore others', value: 'Explore others' },
+    { label: 'Farm Laborer', value: 'Farm Laborer' }, 
+     { label: 'Others', value: 'Explore others' },// Changed from 'Farm Laborers'
   ],
 };
 

@@ -30,7 +30,7 @@ const ServiceDetailScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: service === 'Explore others' ? 'Explore others' : service, // Title for consistency with HomeScreen
+      title: service === 'Explore others' ? `Other ${category}` : service, // More specific title
       headerStyle: {
         backgroundColor: '#2E5BFF',
         elevation: 0,
@@ -45,7 +45,13 @@ const ServiceDetailScreen = ({ navigation, route }) => {
     const fetchProfessionals = async () => {
       try {
         setLoading(true);
-        const response = await getProfessionalsByService(service);
+        // If service is 'Explore others', we also use the category for specific filtering
+        let response;
+        if (service === 'Explore others' && category) {
+          response = await getProfessionalsByService(service, category);
+        } else {
+          response = await getProfessionalsByService(service); // Fallback for standard services
+        }
         const formattedProfessionals = response.data.map(prof => ({
           id: prof._id,
           name: prof.name,
@@ -79,7 +85,7 @@ const ServiceDetailScreen = ({ navigation, route }) => {
     };
 
     fetchProfessionals();
-  }, [navigation, service]);
+  }, [navigation, service, category]); // Add category to dependencies
 
   useEffect(() => {
     let filtered = [...professionals];
@@ -154,7 +160,7 @@ const ServiceDetailScreen = ({ navigation, route }) => {
           <View style={styles.serviceInfo}>
             <Icon name="info-outline" size={20} color="#2E5BFF" />
             <Text style={styles.serviceInfoText}>
-            Showing {filteredProfessionals.length} {service === 'Explore others' ? 'other' : service} professionals{category && ` in ${category}`} {/* Adjust text for 'Explore others' */}
+            Showing {filteredProfessionals.length} {service === 'Explore others' ? 'other' : service} professionals{category && service !== 'Explore others' ? ` in ${category}` : ''}
             </Text>
           </View>
         </View>

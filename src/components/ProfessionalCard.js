@@ -11,14 +11,14 @@ const ProfessionalCard = ({ professional, onPress }) => {
       <View style={styles.info}>
         <Text style={styles.name}>{professional.name || 'Unknown'}</Text>
         <View style={styles.detailRow}>
-          <Icon name="work" size={16} color="#8C95A6" />
-          <Text style={styles.detailText}>
+          <Icon name="work" size={18} color="#8C95A6" />
+          <Text style={styles.designationText}>
             {professional.designation || professional.service || 'N/A'}
           </Text>
         </View>
         <View style={styles.detailRow}>
           <Icon name="access-time" size={16} color="#8C95A6" />
-          <Text style={styles.detailText}>{professional.experience || 'N/A'} years exp</Text>
+          <Text style={styles.experienceText}>{professional.experience || 'N/A'} years exp</Text>
         </View>
         {/* Price information commented out
         <View style={styles.detailRow}>
@@ -83,10 +83,11 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   detailText: {
-    fontSize: 14,
+    fontSize: 18,
     color: '#505F79',
     marginLeft: 8,
   },
+  
   priceUnit: {
     fontSize: 12,
     color: '#8C95A6',
@@ -95,6 +96,26 @@ const styles = StyleSheet.create({
     padding: 8,
     justifyContent: 'center',
   },
+    designationText: { // New style for designation/service
+    fontWeight: 'bold', // Make it bold
+    fontSize: 17,       // Slightly larger font size (adjust as needed)
+    color: '#333333',   // Darker color for more prominence
+    marginLeft: 8,
+    flexShrink: 1, // Allow text to shrink if needed
+  },
+  experienceText: { // New style for experience
+    // fontWeight: '400', // Default fontWeight is 400, explicitly setting it
+    fontSize: 14,
+    color: '#505F79',
+    marginLeft: 8,
+    flexShrink: 1, // Allow text to shrink if needed
+  },
+  detailText: { // Kept for reference or if used elsewhere, but experienceText is more specific now
+    fontSize: 18, // Original size
+    color: '#505F79',
+    marginLeft: 8,
+  },
+
 });
 
 export default ProfessionalCard;
