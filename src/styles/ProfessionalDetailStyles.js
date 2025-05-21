@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   section: {
+    marginTop: 16,
     marginHorizontal: 16,
     marginBottom: 16,
   },

@@ -97,6 +97,7 @@ const ProfessionalDetailScreen = ({ navigation, route }) => {
         </View>
 
         {/* Pricing Card */}
+        {/* Pricing Card commented out
         <View style={styles.pricingCard}>
           <View style={styles.pricingHeader}>
             <Text style={styles.pricingTitle}>Service Price</Text>
@@ -109,6 +110,7 @@ const ProfessionalDetailScreen = ({ navigation, route }) => {
             <Text style={styles.priceUnit}>{professional.priceUnit}</Text>
           </View>
         </View>
+        */}
 
         {/* Location Section */}
         <View style={styles.section}>
@@ -137,9 +139,11 @@ const ProfessionalDetailScreen = ({ navigation, route }) => {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Service Details</Text>
           {renderDetailItem('category', 'Category', professional.serviceCategory)}
-          {renderDetailItem('build', 'Service', professional.service)}        
-          {professional.service === 'Explore others' &&
-            renderDetailItem('badge', 'Designation', professional.designation)}
+          {/* Display the main service name */}
+      {renderDetailItem('build', 'Service', professional.service)} 
+      {/* Display designation if it's different from service or simply if it exists and is meaningful */}
+      {professional.designation && professional.designation !== professional.service &&
+        renderDetailItem('badge', 'Specific Role / Custom Service', professional.designation)}
           {renderDetailItem('description', 'Description', professional.professionDescription)}
           {renderDetailItem('help-outline', 'BestWorkers Approved', professional.needSupport ? 'Yes' : 'No')}
         </View>

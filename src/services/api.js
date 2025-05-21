@@ -3,9 +3,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const api = axios.create({
-  //baseURL: 'http://172.20.10.2:5000/api', // Your local IP
-  baseURL: 'https://bw-backends-v-2-0.onrender.com/api', // Your deployed server
-  timeout: 10000, // 10 seconds https://bw-backends-v-2-0.onrender.com
+  baseURL: 'http://192.168.1.4:5000/api', // Your local IP
+  //baseURL: 'https://bw-backends-v-2-0.onrender.com/api', // Your deployed server
+  timeout: 10000, // 10 seconds
   headers: {
     'Content-Type': 'application/json',
   },

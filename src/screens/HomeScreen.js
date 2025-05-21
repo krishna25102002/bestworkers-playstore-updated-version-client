@@ -81,13 +81,13 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const handleServicePress = (service) => {
-    const categoryForService = Object.keys(serviceNames).find(category =>
+    const categoryForService = Object.keys(serviceNames).find(category => // This will find the 'Others' key if service.value is 'Others'
       Array.isArray(serviceNames[category]) && serviceNames[category].some(s => s.value === service.value),
     );
     navigation.navigate('ServiceDetail', {
       service: service.value,
       category: categoryForService,
-    });
+    }); // service.value will be 'Others' if that category/service is pressed
   };
 
   const handleClearSearch = () => {
@@ -95,7 +95,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const fetchProfessionalCount = useCallback(async (serviceValue) => {
-    if (!serviceValue || serviceValue === 'Explore others') return 0; // Don't fetch for placeholder
+    if (!serviceValue || serviceValue === 'Others') return 0; // Don't fetch for the 'Others' placeholder/category value itself
     try {
       const response = await getProfessionalsByService(serviceValue);
       return response.data.length; 
@@ -116,7 +116,7 @@ const HomeScreen = ({ navigation }) => {
       for (const categoryKey in serviceNames) {
         let currentCategoryTotal = 0;
 
-        if (categoryKey.toLowerCase() === 'explore others') {
+        if (categoryKey.toLowerCase() === 'others') { // Check for 'others' key
           categoryLvlCounts[categoryKey] = 0; 
           continue;
         }
@@ -178,7 +178,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.categorySection}>
           <TouchableOpacity
             style={styles.categoryHeader}
-            onPress={() => handleServicePress({ label: 'Explore others', value: 'Explore others' })}
+            onPress={() => handleServicePress({ label: 'Explore others', value: 'Explore others' })} // Ensure value is 'Explore others'
             activeOpacity={0.7}>
             <View style={styles.categoryIconContainer}>
               <Icon
@@ -520,4 +520,3 @@ export default HomeScreen;
 //     </SafeAreaView>
 //   );
 // };
-

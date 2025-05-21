@@ -30,7 +30,7 @@ const ServiceDetailScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: service,
+      title: service === 'Explore others' ? 'Explore others' : service, // Title for consistency with HomeScreen
       headerStyle: {
         backgroundColor: '#2E5BFF',
         elevation: 0,
@@ -53,10 +53,10 @@ const ServiceDetailScreen = ({ navigation, route }) => {
           initial: prof.name.charAt(0).toUpperCase(),
           bgColor: getRandomColor(),
           experience: parseInt(prof.experience.split('-')[1]) || 2,
-          service: prof.serviceName,
+          service: prof.serviceName, // This will be 'Explore others' for custom services
           city: prof.city,
-          price: prof.servicePrice,
-          priceUnit: prof.priceUnit,
+          // price: prof.servicePrice, // Commented out
+          // priceUnit: prof.priceUnit, // Commented out
           email: prof.email,
           mobileNo: prof.mobileNo,
           secondaryMobileNo: prof.secondaryMobileNo,
@@ -64,7 +64,7 @@ const ServiceDetailScreen = ({ navigation, route }) => {
           state: prof.state,
           serviceCategory: prof.serviceCategory,
           professionDescription: prof.professionDescription,
-          designation: prof.designation, 
+          designation: prof.designation, // This will hold the custom name for 'Explore others' services
           needSupport: prof.needSupport,
           createdAt: prof.createdAt,
           status: prof.status,
@@ -83,19 +83,22 @@ const ServiceDetailScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     let filtered = [...professionals];
-    
+
     if (searchText) {
       filtered = filtered.filter(prof =>
+        // Search by name, city, serviceName, or designation
         prof.name.toLowerCase().includes(searchText.toLowerCase()) ||
-        prof.city.toLowerCase().includes(searchText.toLowerCase())
+        prof.city.toLowerCase().includes(searchText.toLowerCase()) ||
+        prof.service.toLowerCase().includes(searchText.toLowerCase()) || // Search serviceName (might be 'Explore others' or standard)
+        (prof.designation && prof.designation.toLowerCase().includes(searchText.toLowerCase())) // Search designation (custom name or specific role)
       );
     }
 
     if (sortBy === 'experience') {
       filtered.sort((a, b) => b.experience - a.experience);
-    } else if (sortBy === 'price') {
-      filtered.sort((a, b) => a.price - b.price);
-    }
+    } // else if (sortBy === 'price') { // Commented out price sort
+      // filtered.sort((a, b) => a.price - b.price);
+    // }
 
     setFilteredProfessionals(filtered);
   }, [searchText, sortBy, professionals]);
@@ -127,7 +130,7 @@ const ServiceDetailScreen = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#2E5BFF" barStyle="light-content" />
-      
+
       <View style={styles.headerContainer}>
         <View style={styles.searchContainer}>
           <Icon name="search" size={22} style={styles.searchIcon} />
@@ -146,12 +149,12 @@ const ServiceDetailScreen = ({ navigation, route }) => {
             </TouchableOpacity>
           ) : null}
         </View>
-        
+
         <View style={styles.infoContainer}>
           <View style={styles.serviceInfo}>
             <Icon name="info-outline" size={20} color="#2E5BFF" />
             <Text style={styles.serviceInfoText}>
-              Showing {filteredProfessionals.length} {service} professionals in {category}
+            Showing {filteredProfessionals.length} {service === 'Explore others' ? 'other' : service} professionals{category && ` in ${category}`} {/* Adjust text for 'Explore others' */}
             </Text>
           </View>
         </View>
@@ -160,7 +163,7 @@ const ServiceDetailScreen = ({ navigation, route }) => {
           <Text style={styles.sortTitle}>Sort by:</Text>
           <View style={styles.sortOptions}>
             {renderSortButton('experience', 'Experience')}
-            {renderSortButton('price', 'Price')}
+            {/* {renderSortButton('price', 'Price')}  // Price sort button commented out */}
           </View>
         </View>
       </View>

@@ -13,15 +13,14 @@ const ProfessionalCard = ({ professional, onPress }) => {
         <View style={styles.detailRow}>
           <Icon name="work" size={16} color="#8C95A6" />
           <Text style={styles.detailText}>
-            {professional.service === 'Explore others' && professional.designation
-              ? professional.designation
-              : professional.service || 'N/A'}
+            {professional.designation || professional.service || 'N/A'}
           </Text>
         </View>
         <View style={styles.detailRow}>
           <Icon name="access-time" size={16} color="#8C95A6" />
           <Text style={styles.detailText}>{professional.experience || 'N/A'} years exp</Text>
         </View>
+        {/* Price information commented out
         <View style={styles.detailRow}>
           <Icon name="currency-rupee" size={16} color="#8C95A6" />
           <Text style={styles.detailText}>
@@ -29,6 +28,7 @@ const ProfessionalCard = ({ professional, onPress }) => {
             <Text style={styles.priceUnit}>{professional.priceUnit || ''}</Text>
           </Text>
         </View>
+        */}
       </View>
       <View style={styles.arrowContainer}>
         <Icon name="arrow-forward-ios" size={16} color="#2E5BFF" />

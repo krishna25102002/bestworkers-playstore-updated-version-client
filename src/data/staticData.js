@@ -521,7 +521,6 @@ export const serviceCategories = [
   { label: 'Banking & Office Jobs', value: 'Banking & Office Jobs' },
   { label: 'North Indian Workers', value: 'North Indian Workers' },
   { label: 'Village & Agricultural Workers', value: 'Village & Agricultural Workers' },
-  { label: 'Explore others', value: 'Explore others' },
 ];
 
 // Service names by category
