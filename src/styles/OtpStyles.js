@@ -18,9 +18,9 @@ export default StyleSheet.create({
   },
   logoText: {
     fontSize: 36,
-    fontWeight: '700',
+    // fontWeight: '700', // Handled by AppText bold prop
     color: 'white',
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
+    // fontFamily: 'Poppins-Bold', // Handled by AppText bold prop
     letterSpacing: 1.2,
   },
   formContainer: {
@@ -44,28 +44,28 @@ export default StyleSheet.create({
   },
   welcomeText: {
     fontSize: 26,
-    fontWeight: '700',
+    // fontWeight: '700', // Handled by AppText bold prop
     color: '#2c3e50',
     marginBottom: 5,
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
+    // fontFamily: 'Poppins-Bold', // Handled by AppText bold prop
   },
   subtitleText: {
     fontSize: 15,
     color: '#7f8c8d',
     textAlign: 'center',
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
-    fontWeight: '400',
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
+    // fontWeight: '400', // Handled by AppText
   },
   inputContainer: {
     marginBottom: 30,
   },
   label: {
     fontSize: 12,
-    fontWeight: '600',
+    // fontWeight: '600', // Handled by AppText semiBold prop
     color: '#7f8c8d',
     marginBottom: 8,
     letterSpacing: 0.5,
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
+    // fontFamily: 'Poppins-SemiBold', // Handled by AppText semiBold prop
   },
   otpInput: {
     height: 60,
@@ -78,12 +78,14 @@ export default StyleSheet.create({
     borderColor: '#ecf0f1',
     textAlign: 'center',
     letterSpacing: 10,
+    fontFamily: 'Poppins-Medium', // Explicitly for TextInput (OTP input)
   },
   errorText: {
     color: '#e74c3c',
     fontSize: 12,
     marginTop: 5,
     textAlign: 'center',
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
   },
   verifyButton: {
     height: 56,
@@ -95,9 +97,9 @@ export default StyleSheet.create({
   verifyButtonText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: '600',
+    // fontWeight: '600', // Handled by AppText semiBold prop
     letterSpacing: 0.5,
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
+    // fontFamily: 'Poppins-SemiBold', // Handled by AppText semiBold prop
   },
   resendContainer: {
     flexDirection: 'row',
@@ -107,11 +109,13 @@ export default StyleSheet.create({
   resendText: {
     color: '#7f8c8d',
     fontSize: 14,
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
   },
   resendLink: {
     color: '#2E5BFF',
-    fontWeight: '600',
+    // fontWeight: '600', // Handled by AppText semiBold prop
     marginLeft: 5,
+    // fontFamily: 'Poppins-SemiBold', // Handled by AppText semiBold prop
   },
   spamNoteText: {
   fontSize: 14, // Smaller font size for a note
@@ -120,5 +124,6 @@ export default StyleSheet.create({
   marginTop: 8,     // Space above the note
   textAlign: 'center', // Center the text
   paddingHorizontal: 10, // Add some horizontal padding if needed
+  // fontFamily: 'Poppins-Regular', // Handled by AppText
 },
 });

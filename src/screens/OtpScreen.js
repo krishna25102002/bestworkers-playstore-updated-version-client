@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, Alert } from 'react-native';
+import { View, TextInput, TouchableOpacity, KeyboardAvoidingView, SafeAreaView, Alert, Platform } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { verifyOtp, resendOtp } from '../services/api';
+import AppText from '../components/AppText'; // Import AppText
 import styles from '../styles/OtpStyles';
 
 const OtpScreen = () => {
@@ -101,19 +102,19 @@ const OtpScreen = () => {
           style={styles.keyboardAvoid}
         >
           <View style={styles.logoContainer}>
-            <Text style={styles.logoText}>BestWorkers</Text>
+            <AppText style={styles.logoText} bold>BestWorkers</AppText>
           </View>
           
           <View style={styles.formContainer}>
             <View style={styles.headerContainer}>
-              <Text style={styles.welcomeText}>Verify OTP</Text>
-              <Text style={styles.subtitleText}>
+              <AppText style={styles.welcomeText} bold>Verify OTP</AppText>
+              <AppText style={styles.subtitleText}>
                 We've sent a 4-digit OTP to {email || 'your email'}
-              </Text>
+              </AppText>
             </View>
             
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>ENTER OTP</Text>
+              <AppText style={styles.label} semiBold>ENTER OTP</AppText>
               <TextInput
                 style={styles.otpInput}
                 placeholder="----"
@@ -123,10 +124,10 @@ const OtpScreen = () => {
                 value={otp}
                 onChangeText={handleOtpChange}
               />
-               <Text style={styles.spamNoteText}>
+               <AppText style={styles.spamNoteText}>
                 * If you don't see the OTP, please check your spam or junk folder.
-              </Text>
-              {error ? <Text style={styles.errorText}>{error}</Text> : null}
+              </AppText>
+              {error ? <AppText style={styles.errorText}>{error}</AppText> : null}
             </View>
             
             <TouchableOpacity 
@@ -135,24 +136,24 @@ const OtpScreen = () => {
               activeOpacity={0.8}
               disabled={loading}
             >
-              <Text style={styles.verifyButtonText}>
+              <AppText style={styles.verifyButtonText} semiBold>
                 {loading ? 'VERIFYING...' : 'VERIFY'}
-              </Text>
+              </AppText>
             </TouchableOpacity>
             
             <View style={styles.resendContainer}>
-              <Text style={styles.resendText}>Didn't receive OTP?</Text>
+              <AppText style={styles.resendText}>Didn't receive OTP?</AppText>
               <TouchableOpacity 
                 onPress={handleResend} 
                 disabled={resendDisabled || resendLoading}
               >
-                <Text style={[
+                <AppText style={[
                   styles.resendLink,
                   (resendDisabled || resendLoading) && { color: '#bdc3c7' }
-                ]}>
+                ]} semiBold>
                   {resendLoading ? 'SENDING...' : 
                    resendDisabled ? `Resend (${timer}s)` : 'Resend'}
-                </Text>
+                </AppText>
               </TouchableOpacity>
             </View>
           </View>

@@ -1,6 +1,8 @@
 // ProfileScreen.styles.js
 import { StyleSheet } from 'react-native';
 
+const PRIMARY_COLOR = '#1a4b8c'; // Define the royal blue color
+
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -16,7 +18,7 @@ export const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 16,
     color: '#FFFFFF',
-    fontWeight: '500',
+    // fontWeight: '500', // Handled by AppText
   },
   header: {
     width: '100%',
@@ -34,8 +36,8 @@ export const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
     color: '#FFFFFF',
+    // fontFamily: 'Poppins-Bold', // Handled by <AppText bold>
   },
   menuButton: {
     padding: 5,
@@ -90,13 +92,13 @@ export const styles = StyleSheet.create({
   },
   avatarInitial: {
     fontSize: 40,
-    fontWeight: 'bold',
     color: '#FFFFFF',
+    // fontFamily: 'Poppins-Bold', // Handled by <AppText bold>
   },
   userName: {
     fontSize: 24,
-    fontWeight: 'bold',
     color: '#333333',
+    // fontFamily: 'Poppins-Bold', // Handled by <AppText bold>
     marginBottom: 10,
   },
   userInfoContainer: {
@@ -112,18 +114,19 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: '#606060',
     marginLeft: 10,
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
   },
   editProfileButton: {
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#4A90E2',
+    borderColor: PRIMARY_COLOR,
   },
   editProfileText: {
     fontSize: 14,
-    color: '#4A90E2',
-    fontWeight: '500',
+    color: PRIMARY_COLOR,
+    // fontWeight: '500', // Handled by <AppText medium> or <AppText semiBold>
   },
   statsContainer: {
     flexDirection: 'row',
@@ -149,12 +152,13 @@ export const styles = StyleSheet.create({
   },
   statNumber: {
     fontSize: 22,
-    fontWeight: 'bold',
     color: '#333333',
+    // fontFamily: 'Poppins-Bold', // Handled by <AppText bold>
     marginBottom: 5,
   },
   statLabel: {
     fontSize: 12,
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     color: '#606060',
   },
   statDivider: {
@@ -194,13 +198,14 @@ export const styles = StyleSheet.create({
   },
   professionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#333333',
+    // fontFamily: 'Poppins-Bold', // Handled by <AppText bold>
     marginBottom: 10,
   },
   professionText: {
     fontSize: 14,
     color: '#606060',
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     lineHeight: 20,
     marginBottom: 20,
   },
@@ -226,7 +231,7 @@ export const styles = StyleSheet.create({
   addButtonText: {
     color: '#FFFFFF',
     fontSize: 15,
-    fontWeight: '600',
+    // fontWeight: '600', // Handled by <AppText semiBold>
     marginRight: 8,
   },
   actionsContainer: {
@@ -262,12 +267,13 @@ export const styles = StyleSheet.create({
   },
   actionTitle: {
     fontSize: 16,
-    fontWeight: '600',
     color: '#333333',
+    // fontFamily: 'Poppins-SemiBold', // Handled by <AppText semiBold>
     marginBottom: 3,
   },
   actionSubtitle: {
     fontSize: 13,
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     color: '#888888',
   },
   errorContainer: {
@@ -283,23 +289,24 @@ export const styles = StyleSheet.create({
   },
   errorTitle: {
     fontSize: 22,
-    fontWeight: 'bold',
     color: '#333',
+    // fontFamily: 'Poppins-Bold', // Handled by <AppText bold>
     marginBottom: 10,
   },
   errorText: {
     fontSize: 16,
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     color: '#666',
     textAlign: 'center',
     marginBottom: 20,
     lineHeight: 22,
   },
   retryButton: {
-    backgroundColor: '#4A90E2',
+    backgroundColor: PRIMARY_COLOR,
     paddingHorizontal: 30,
     paddingVertical: 12,
     borderRadius: 25,
-    shadowColor: '#4A90E2',
+    shadowColor: PRIMARY_COLOR,
     shadowOffset: {
       width: 0,
       height: 3,
@@ -311,6 +318,6 @@ export const styles = StyleSheet.create({
   retryButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: '600',
+    // fontWeight: '600', // Handled by <AppText semiBold>
   },
 });

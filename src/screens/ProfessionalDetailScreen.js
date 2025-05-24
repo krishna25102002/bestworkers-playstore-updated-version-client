@@ -10,6 +10,9 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from '../styles/ProfessionalDetailStyles';
+import AppText from '../components/AppText'; // Import AppText
+
+const PRIMARY_COLOR = '#1a4b8c'; // Royal blue
 
 const ProfessionalDetailScreen = ({ navigation, route }) => {
   const { professional } = route.params;
@@ -18,25 +21,26 @@ const ProfessionalDetailScreen = ({ navigation, route }) => {
     navigation.setOptions({
       title: professional.name,
       headerStyle: {
-        backgroundColor: '#2E5BFF',
+        backgroundColor: PRIMARY_COLOR,
         elevation: 0,
         shadowOpacity: 0,
       },
       headerTintColor: '#fff',
       headerTitleStyle: {
         fontWeight: 'bold',
+        fontFamily: 'Poppins-Bold', // Explicitly set for header if not using AppText here
       },
     });
   }, [navigation, professional.name]);
 
   const renderDetailItem = (icon, title, value, isImportant = false) => (
     <View style={styles.detailItem}>
-      <Icon name={icon} size={20} color="#2E5BFF" />
+      <Icon name={icon} size={20} color={PRIMARY_COLOR} />
       <View style={styles.detailTextContainer}>
-        <Text style={styles.detailTitle}>{title}</Text>
-        <Text style={[styles.detailValue, isImportant && styles.importantValue]}>
+        <AppText style={styles.detailTitle}>{title}</AppText>
+        <AppText style={[styles.detailValue, isImportant && styles.importantValue]}>
           {value || 'Not provided'}
-        </Text>
+        </AppText>
       </View>
     </View>
   );
@@ -68,30 +72,30 @@ const ProfessionalDetailScreen = ({ navigation, route }) => {
         {/* Profile Header */}
         <View style={styles.profileHeader}>
           <View style={[styles.avatarCircle, { backgroundColor: professional.bgColor }]}>
-            <Text style={styles.avatarLetter}>
+            <AppText style={styles.avatarLetter} bold>
               {professional.initial}
-            </Text>
+            </AppText>
           </View>
 
-          <Text style={styles.profileName}>{professional.name}</Text>
+          <AppText style={styles.profileName} bold>{professional.name}</AppText>
           <View style={styles.badgeContainer}>
             <View style={styles.badge}>
-              <Text style={styles.badgeText}>{professional.service}</Text>
+              <AppText style={styles.badgeText} medium>{professional.service}</AppText>
             </View>
             <View style={styles.badge}>
-              <Text style={styles.badgeText}>{professional.serviceCategory}</Text>
+              <AppText style={styles.badgeText} medium>{professional.serviceCategory}</AppText>
             </View>
           </View>
 
           <View style={styles.statsContainer}>
             <View style={styles.statItem}>
-              <Icon name="work" size={22} color="#2E5BFF" />
-              <Text style={styles.statText}>{professional.experience} years experience</Text>
+              <Icon name="work" size={22} color={PRIMARY_COLOR} />
+              <AppText style={styles.statText} medium>{professional.experience} years experience</AppText>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statItem}>
-              <Icon name="location-on" size={22} color="#2E5BFF" />
-              <Text style={styles.statText}>{professional.city}</Text>
+              <Icon name="location-on" size={22} color={PRIMARY_COLOR} />
+              <AppText style={styles.statText} medium>{professional.city}</AppText>
             </View>
           </View>
         </View>
@@ -100,35 +104,35 @@ const ProfessionalDetailScreen = ({ navigation, route }) => {
         {/* Pricing Card commented out
         <View style={styles.pricingCard}>
           <View style={styles.pricingHeader}>
-            <Text style={styles.pricingTitle}>Service Price</Text>
+            <AppText style={styles.pricingTitle} bold>Service Price</AppText>
             <View style={styles.priceBadge}>
-              <Text style={styles.priceBadgeText}>Best Value</Text>
+              <AppText style={styles.priceBadgeText} bold>Best Value</AppText>
             </View>
           </View>
           <View style={styles.priceRow}>
-            <Text style={styles.priceValue}>₹{professional.price}</Text>
-            <Text style={styles.priceUnit}>{professional.priceUnit}</Text>
+            <AppText style={styles.priceValue} bold>₹{professional.price}</AppText>
+            <AppText style={styles.priceUnit}>{professional.priceUnit}</AppText>
           </View>
         </View>
         */}
 
         {/* Location Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Location</Text>
+          <AppText style={styles.sectionTitle} bold>Location</AppText>
           <View style={styles.locationCard}>
             <View style={styles.locationHeader}>
-              <Icon name="place" size={22} color="#2E5BFF" />
-              <Text style={styles.locationTitle}>Service Area</Text>
+              <Icon name="place" size={22} color={PRIMARY_COLOR} />
+              <AppText style={styles.locationTitle} bold>Service Area</AppText>
             </View>
-            <Text style={styles.locationText}>
+            <AppText style={styles.locationText}>
               {professional.city}, {professional.district}, {professional.state}
-            </Text>
+            </AppText>
           </View>
         </View>
 
         {/* Contact Information */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Contact Information</Text>
+          <AppText style={styles.sectionTitle} bold>Contact Information</AppText>
           {renderDetailItem('email', 'Email', professional.email)}
           {renderDetailItem('phone', 'Phone', professional.mobileNo, true)}
           {professional.secondaryMobileNo && 
@@ -137,7 +141,7 @@ const ProfessionalDetailScreen = ({ navigation, route }) => {
 
         {/* Service Details */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Service Details</Text>
+          <AppText style={styles.sectionTitle} bold>Service Details</AppText>
           {renderDetailItem('category', 'Category', professional.serviceCategory)}
           {/* Display the main service name */}
       {renderDetailItem('build', 'Service', professional.service)} 
@@ -150,19 +154,19 @@ const ProfessionalDetailScreen = ({ navigation, route }) => {
 
         {/* Additional Information */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Additional Information</Text>
+          <AppText style={styles.sectionTitle} bold>Additional Information</AppText>
           {renderDetailItem('event', 'Joined', new Date(professional.createdAt).toLocaleDateString())}
         </View>
 
         {/* Reviews Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Reviews</Text>
+          <AppText style={styles.sectionTitle} bold>Reviews</AppText>
           <View style={styles.comingSoonContainer}>
             <Icon name="star" size={40} color="#F59E0B" />
-            <Text style={styles.comingSoonText}>Reviews Coming Soon!</Text>
-            <Text style={styles.comingSoonSubtext}>
+            <AppText style={styles.comingSoonText} bold>Reviews Coming Soon!</AppText>
+            <AppText style={styles.comingSoonSubtext}>
               We're working on adding reviews to help you make informed decisions.
-            </Text>
+            </AppText>
           </View>
         </View>
 
@@ -175,7 +179,7 @@ const ProfessionalDetailScreen = ({ navigation, route }) => {
             onPress={handleCallPress}
           >
             <Icon name="call" size={20} color="#FFFFFF" />
-            <Text style={styles.buttonText}>Call Now</Text>
+            <AppText style={styles.buttonText} bold>Call Now</AppText>
           </TouchableOpacity>
         </View>
       </ScrollView>

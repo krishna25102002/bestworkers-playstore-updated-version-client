@@ -19,14 +19,14 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 20,
-    fontWeight: '700',
+    // fontWeight: '700', // Handled by <AppText bold>
     color: '#333',
     flex: 1,
     textAlign: 'center',
   },
   sectionHeader: {
     fontSize: 20,
-    fontWeight: '600',
+    // fontWeight: '600', // Handled by <AppText semiBold>
     marginTop: 15,
     marginBottom: 10,
     color: '#1E40AF', // Royal blue color for section headers
@@ -41,13 +41,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     fontSize: 16,
     color: '#333',
-    fontWeight: '500',
+    // fontWeight: '500', // Handled by <AppText medium>
   },
   input: {
     backgroundColor: '#F5F7FA',
     borderRadius: 12,
     padding: 14,
-    fontSize: 16,
+    fontSize: 15,
     borderWidth: 1,
     borderColor: '#E2E8F0',
     shadowColor: '#000',
@@ -55,13 +55,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 2,
+    fontFamily: 'Poppins-Regular', // For TextInput
   },
   multilineInput: {
     minHeight: 100,
     textAlignVertical: 'top',
   },
   dropdown: {
-    height: 50,
+    height: 45,
     backgroundColor: '#F5F7FA',
     borderRadius: 12,
     paddingHorizontal: 12,
@@ -80,10 +81,12 @@ const styles = StyleSheet.create({
   placeholderStyle: {
     fontSize: 16,
     color: '#94A3B8',
+    fontFamily: 'Poppins-Regular',
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#333',
+    fontFamily: 'Poppins-Regular',
   },
   iconStyle: {
     width: 20,
@@ -91,7 +94,8 @@ const styles = StyleSheet.create({
   },
   inputSearchStyle: {
     height: 40,
-    fontSize: 16,
+    fontSize: 13,
+    fontFamily: 'Poppins-Regular',
   },
   icon: {
     marginRight: 10,
@@ -139,6 +143,7 @@ const styles = StyleSheet.create({
   radioLabel: {
     fontSize: 16,
     color: '#333',
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -152,6 +157,7 @@ const styles = StyleSheet.create({
   checkboxLabel: {
     fontSize: 16,
     color: '#333',
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     flex: 1,
   },
   submitButton: {
@@ -171,11 +177,12 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: '#fff',
     fontSize: 18,
-    fontWeight: '600',
+    // fontWeight: '600', // Handled by <AppText semiBold>
   },
   errorText: {
     color: '#E53E3E',
     fontSize: 14,
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     marginTop: 5,
   },
   modalContainer: {
@@ -202,13 +209,14 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 22,
-    fontWeight: '700',
+    // fontWeight: '700', // Handled by <AppText bold>
     marginBottom: 10,
     color: '#1E40AF',
   },
   modalText: {
     fontSize: 16,
     marginBottom: 20,
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     textAlign: 'center',
     color: '#666',
   },
@@ -229,7 +237,7 @@ const styles = StyleSheet.create({
   modalButtonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '600',
+    // fontWeight: '600', // Handled by <AppText semiBold>
   },
   inputWithIconContainer: {
     flexDirection: 'row',
@@ -254,6 +262,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14, // Match your input padding
     fontSize: 16,        // Match your input font size
     color: '#333',       // Match your input text color
+    fontFamily: 'Poppins-Regular', // For TextInput
     borderWidth: 0,      // Remove individual border as container has it
     backgroundColor: 'transparent', // Ensure TextInput bg is transparent
     // height: '100%', // Ensure it takes full height of container if needed

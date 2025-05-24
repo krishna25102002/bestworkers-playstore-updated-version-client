@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   View,
-  Text,
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
@@ -14,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message'; // Import Toast
 import { loginUser } from '../services/api';
+import AppText from '../components/AppText'; // Import AppText
 import styles from '../styles/LoginStyles';
 
 const LoginScreen = () => {
@@ -152,20 +152,20 @@ const LoginScreen = () => {
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled">
             <View style={styles.logoContainer}>
-              <Text style={styles.logoText}>BestWorkers</Text>
-              <Text style={styles.logoSubtext}>Excellence in Every Task</Text>
+              <AppText style={styles.logoText} bold>BestWorkers</AppText>
+              <AppText style={styles.logoSubtext} light>Excellence in Every Task</AppText>
             </View>
 
             <View style={styles.formContainer}>
               <View style={styles.headerContainer}>
-                <Text style={styles.welcomeText}>Welcome Back</Text>
-                <Text style={styles.subtitleText}>
+                <AppText style={styles.welcomeText} bold>Welcome Back</AppText>
+                <AppText style={styles.subtitleText}>
                   Sign in to access your account
-                </Text>
+                </AppText>
               </View>
 
               <View style={styles.inputContainer}>
-                <Text style={styles.label}>EMAIL ADDRESS</Text>
+                <AppText style={styles.label} semiBold>EMAIL ADDRESS</AppText>
                 <TextInput
                   style={styles.input}
                   placeholder="Enter your email"
@@ -178,7 +178,7 @@ const LoginScreen = () => {
               </View>
 
               <View style={styles.inputContainer}>
-                <Text style={styles.label}>PIN</Text>
+                <AppText style={styles.label} semiBold>PIN</AppText>
                 <TextInput
                   style={styles.input}
                   placeholder="Enter your 4-digit PIN"
@@ -194,7 +194,7 @@ const LoginScreen = () => {
               <TouchableOpacity
                 style={styles.forgotPin}
                 onPress={handleForgotPin}>
-                <Text style={styles.forgotPinText}>Forgot your PIN?</Text>
+                <AppText style={styles.forgotPinText} semiBold>Forgot your PIN?</AppText>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -207,15 +207,15 @@ const LoginScreen = () => {
                   style={styles.buttonGradient}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 0 }}>
-                  <Text style={styles.loginButtonText}>
+                  <AppText style={styles.loginButtonText} semiBold>
                     {loading ? 'LOGGING IN...' : 'LOG IN'}
-                  </Text>
+                  </AppText>
                 </LinearGradient>
               </TouchableOpacity>
 
               <View style={styles.divider}>
                 <View style={styles.dividerLine} />
-                <Text style={styles.dividerText}>OR</Text>
+                <AppText style={styles.dividerText} semiBold>OR</AppText>
                 <View style={styles.dividerLine} />
               </View>
 
@@ -223,9 +223,9 @@ const LoginScreen = () => {
                 style={styles.createAccountButton}
                 onPress={handleCreateAccount}
                 activeOpacity={0.8}>
-                <Text style={styles.createAccountButtonText}>
+                <AppText style={styles.createAccountButtonText} semiBold>
                   CREATE NEW ACCOUNT
-                </Text>
+                </AppText>
               </TouchableOpacity>
             </View>
           </ScrollView>

@@ -9,6 +9,7 @@ import {
   StatusBar,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AppText from '../components/AppText'; // Import AppText
 
 const PrivacyPolicyScreen = ({navigation}) => {
   return (
@@ -20,7 +21,7 @@ const PrivacyPolicyScreen = ({navigation}) => {
           style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#2c5282" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Privacy Policy</Text>
+        <AppText style={styles.headerTitle} bold>Privacy Policy</AppText>
         <View style={styles.emptyView}></View>
       </View>
 
@@ -28,7 +29,7 @@ const PrivacyPolicyScreen = ({navigation}) => {
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}>
         <View style={styles.card}>
-          <Text style={styles.lastUpdated}>Last Updated: June 10, 2024</Text>
+          <AppText style={styles.lastUpdated}>Last Updated: June 10, 2024</AppText>
 
           <View style={styles.divider} />
 
@@ -42,55 +43,55 @@ const PrivacyPolicyScreen = ({navigation}) => {
             title="Information We Collect"
             iconName="document-text"
             content={null}>
-            <Text style={styles.subSectionTitle}>Personal Information</Text>
-            <Text style={styles.paragraph}>
+            <AppText style={styles.subSectionTitle} semiBold>Personal Information</AppText>
+            <AppText style={styles.paragraph}>
               When you register for an account, we may collect:
-            </Text>
+            </AppText>
             <View style={styles.bulletContainer}>
-              <Text style={styles.bulletItem}>
+              <AppText style={styles.bulletItem}>
                 • Your name, email address, phone number
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • Your profession, skills, and work experience
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • Location data to help connect you with nearby service
                 providers or customers
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • Profile picture (optional)
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • Payment information (if applicable for premium services)
-              </Text>
+              </AppText>
             </View>
 
-            <Text style={styles.subSectionTitle}>
+            <AppText style={styles.subSectionTitle} semiBold>
               Service-Related Information
-            </Text>
-            <Text style={styles.paragraph}>
+            </AppText>
+            <AppText style={styles.paragraph}>
               For service providers, we collect:
-            </Text>
+            </AppText>
             <View style={styles.bulletContainer}>
-              <Text style={styles.bulletItem}>
+              <AppText style={styles.bulletItem}>
                 • Your service categories (e.g., Plumbing, Electrical work,
                 Construction, etc.)
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • Availability and work schedule
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • Ratings and reviews from customers
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • Work history within the app
-              </Text>
+              </AppText>
             </View>
 
-            <Text style={styles.subSectionTitle}>
+            <AppText style={styles.subSectionTitle} semiBold>
               Search and Interaction Data
-            </Text>
-            <Text style={styles.paragraph}>We collect information about:</Text>
+            </AppText>
+            <AppText style={styles.paragraph}>We collect information about:</AppText>
             <View style={styles.bulletContainer}>
               <Text style={styles.bulletItem}>
                 • Your searches for specific services or professionals
@@ -108,32 +109,32 @@ const PrivacyPolicyScreen = ({navigation}) => {
             title="How We Use Your Information"
             iconName="analytics"
             content={null}>
-            <Text style={styles.paragraph}>
+            <AppText style={styles.paragraph}>
               We use the information we collect to:
-            </Text>
+            </AppText>
             <View style={styles.bulletContainer}>
-              <Text style={styles.bulletItem}>
+              <AppText style={styles.bulletItem}>
                 • Provide and maintain our service
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • Connect service providers with potential customers
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • Verify professional qualifications and skills
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • Process transactions and send service-related notifications
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • Improve our app and develop new features
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • Communicate with you about updates, security alerts, and
                 support messages
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • Prevent fraud and ensure the security of our platform
-              </Text>
+              </AppText>
             </View>
           </SectionWithIcon>
 
@@ -141,26 +142,26 @@ const PrivacyPolicyScreen = ({navigation}) => {
             title="Sharing of Information"
             iconName="share-social"
             content={null}>
-            <Text style={styles.paragraph}>We may share information:</Text>
+            <AppText style={styles.paragraph}>We may share information:</AppText>
             <View style={styles.bulletContainer}>
-              <Text style={styles.bulletItem}>
+              <AppText style={styles.bulletItem}>
                 • With other users to facilitate service connections (e.g.,
                 showing your profile to potential customers)
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • With service providers who help with app operations (payment
                 processors, cloud hosting)
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • When required by law or to protect our rights
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • During business transfers (merger, acquisition)
-              </Text>
+              </AppText>
             </View>
-            <Text style={styles.paragraph}>
+            <AppText style={styles.paragraph}>
               We do not sell your personal information to third parties.
-            </Text>
+            </AppText>
           </SectionWithIcon>
 
           <SectionWithIcon
@@ -173,21 +174,21 @@ const PrivacyPolicyScreen = ({navigation}) => {
             title="Your Choices"
             iconName="options"
             content={null}>
-            <Text style={styles.paragraph}>You can:</Text>
+            <AppText style={styles.paragraph}>You can:</AppText>
             <View style={styles.bulletContainer}>
-              <Text style={styles.bulletItem}>
+              <AppText style={styles.bulletItem}>
                 • Update or correct your profile information in the app settings
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • Adjust notification preferences
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • Request deletion of your account and associated data by
                 contacting us
-              </Text>
-              <Text style={styles.bulletItem}>
+              </AppText>
+              <AppText style={styles.bulletItem}>
                 • Opt-out of certain data collection (where applicable)
-              </Text>
+              </AppText>
             </View>
           </SectionWithIcon>
 
@@ -204,13 +205,13 @@ const PrivacyPolicyScreen = ({navigation}) => {
           />
 
           <SectionWithIcon title="Contact Us" iconName="mail" content={null}>
-            <Text style={styles.paragraph}>
+            <AppText style={styles.paragraph}>
               If you have questions about this Privacy Policy, please contact us
               at:
-            </Text>
+            </AppText>
             <View style={styles.contactContainer}>
               <Ionicons name="mail" size={18} color="#4a5568" />
-              <Text style={styles.contactText}>bestworkerrzz@gmail.com</Text>
+              <AppText style={styles.contactText} medium>bestworkerrzz@gmail.com</AppText>
             </View>
           </SectionWithIcon>
         </View>
@@ -225,9 +226,9 @@ const SectionWithIcon = ({title, iconName, content, children}) => {
     <View style={styles.section}>
       <View style={styles.sectionHeader}>
         <Ionicons name={iconName} size={20} color="#2c5282" />
-        <Text style={styles.sectionTitle}>{title}</Text>
+        <AppText style={styles.sectionTitle} bold>{title}</AppText>
       </View>
-      {content && <Text style={styles.paragraph}>{content}</Text>}
+      {content && <AppText style={styles.paragraph}>{content}</AppText>}
       {children}
     </View>
   );
@@ -256,7 +257,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    // fontWeight: 'bold', // Handled by AppText
     color: '#2c5282',
   },
   emptyView: {
@@ -281,6 +282,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#718096',
     marginBottom: 5,
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     textAlign: 'center',
     fontStyle: 'italic',
   },
@@ -299,19 +301,20 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 17,
-    fontWeight: '700',
+    // fontWeight: '700', // Handled by AppText
     color: '#2c5282',
     marginLeft: 8,
   },
   subSectionTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    // fontWeight: '600', // Handled by AppText
     color: '#4a5568',
     marginTop: 12,
     marginBottom: 6,
   },
   paragraph: {
     fontSize: 15,
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     lineHeight: 22,
     marginBottom: 12,
     color: '#4a5568',
@@ -322,6 +325,7 @@ const styles = StyleSheet.create({
   },
   bulletItem: {
     fontSize: 15,
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     lineHeight: 22,
     color: '#4a5568',
     marginBottom: 6,
@@ -337,7 +341,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 15,
     color: '#4a5568',
-    fontWeight: '500',
+    // fontWeight: '500', // Handled by AppText
   },
 });
 

@@ -27,6 +27,7 @@ import {
 import {addProfession, getUserProfile, updateProfessionalProfile} from '../services/api'; // Added updateProfessionalProfile
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native'; // To get route params
+import AppText from '../components/AppText'; // Import AppText
 
 
 const AddProfessionScreen = ({navigation}) => {
@@ -276,12 +277,12 @@ const AddProfessionScreen = ({navigation}) => {
             onPress={() => navigation.goBack()}
             style={styles.backButton}>
             <AntDesign name="arrowleft" size={24} color="#1E40AF" />
-          </TouchableOpacity>
-          <Text style={styles.header}>{screenTitle}</Text>
+          </TouchableOpacity> 
+          <AppText style={styles.header} bold>{screenTitle}</AppText>
         </View>
 
-        {/* Personal Information */}
-        <Text style={styles.sectionHeader}>Personal Information</Text>
+        {/* Personal Information */} 
+        <AppText style={styles.sectionHeader} semiBold>Personal Information</AppText>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Name*</Text>
           <TextInput
@@ -290,7 +291,7 @@ const AddProfessionScreen = ({navigation}) => {
             value={name}
             editable={false} // Typically name is not editable here, fetched from user profile
           />
-          {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
+          {errors.name && <AppText style={styles.errorText}>{errors.name}</AppText>}
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Email*</Text>
@@ -301,7 +302,7 @@ const AddProfessionScreen = ({navigation}) => {
             value={email}
             editable={false} // Email is often not editable here
           />
-          {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+          {errors.email && <AppText style={styles.errorText}>{errors.email}</AppText>}
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Mobile No*</Text>
@@ -314,7 +315,7 @@ const AddProfessionScreen = ({navigation}) => {
             editable={false} // Mobile is generally not editable here, fetched from user profile
           />
           {errors.mobileNo && (
-            <Text style={styles.errorText}>{errors.mobileNo}</Text>
+            <AppText style={styles.errorText}>{errors.mobileNo}</AppText>
           )}
         </View>
         <View style={styles.inputContainer}>
@@ -328,12 +329,12 @@ const AddProfessionScreen = ({navigation}) => {
             onChangeText={setSecondaryMobileNo}
           />
           {errors.secondaryMobileNo && (
-            <Text style={styles.errorText}>{errors.secondaryMobileNo}</Text>
+            <AppText style={styles.errorText}>{errors.secondaryMobileNo}</AppText>
           )}
         </View>
 
-        {/* Location Information */}
-        <Text style={styles.sectionHeader}>Location Information</Text>
+        {/* Location Information */} 
+        <AppText style={styles.sectionHeader} semiBold>Location Information</AppText>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>State*</Text>
           <Dropdown
@@ -367,7 +368,7 @@ const AddProfessionScreen = ({navigation}) => {
               />
             )}
           />
-          {errors.state && <Text style={styles.errorText}>{errors.state}</Text>}
+          {errors.state && <AppText style={styles.errorText}>{errors.state}</AppText>}
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>District*</Text>
@@ -403,7 +404,7 @@ const AddProfessionScreen = ({navigation}) => {
             )}
           />
           {errors.district && (
-            <Text style={styles.errorText}>{errors.district}</Text>
+            <AppText style={styles.errorText}>{errors.district}</AppText>
           )}
         </View>
         <View style={styles.inputContainer}>
@@ -438,11 +439,11 @@ const AddProfessionScreen = ({navigation}) => {
               />
             )}
           />
-          {errors.city && <Text style={styles.errorText}>{errors.city}</Text>}
+          {errors.city && <AppText style={styles.errorText}>{errors.city}</AppText>}
         </View>
 
-        {/* Professional Information */}
-        <Text style={styles.sectionHeader}>Professional Information</Text>
+        {/* Professional Information */} 
+        <AppText style={styles.sectionHeader} semiBold>Professional Information</AppText>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Service Category*</Text>
           <Dropdown
@@ -478,7 +479,7 @@ const AddProfessionScreen = ({navigation}) => {
             )}
           />
           {errors.serviceCategory && (
-            <Text style={styles.errorText}>{errors.serviceCategory}</Text>
+            <AppText style={styles.errorText}>{errors.serviceCategory}</AppText>
           )}
         </View>
 
@@ -518,16 +519,16 @@ const AddProfessionScreen = ({navigation}) => {
             )}
           />
           {errors.serviceName && (
-            <Text style={styles.errorText}>{errors.serviceName}</Text>
+            <AppText style={styles.errorText}>{errors.serviceName}</AppText>
           )}
         </View>
 
         {/* Show Designation input if 'Explore others' is selected for ServiceName */}
         {serviceName === 'Explore others' && (
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>
+              <AppText style={styles.label}>
                 Specify Service Name* {/* Adjusted label for clarity when "Others" is selected */}
-              </Text>
+              </AppText>
               <View style={styles.inputWithIconContainer}>
                 <AntDesign
                   name="idcard"
@@ -543,7 +544,7 @@ const AddProfessionScreen = ({navigation}) => {
                   onChangeText={setDesignation}
                 />
               </View>
-              {errors.designation && <Text style={styles.errorText}>{errors.designation}</Text>}
+              {errors.designation && <AppText style={styles.errorText}>{errors.designation}</AppText>}
             </View>
         )}
 
@@ -577,7 +578,7 @@ const AddProfessionScreen = ({navigation}) => {
             )}
           />
           {errors.experience && (
-            <Text style={styles.errorText}>{errors.experience}</Text>
+            <AppText style={styles.errorText}>{errors.experience}</AppText>
           )}
         </View>
 
@@ -616,11 +617,11 @@ const AddProfessionScreen = ({navigation}) => {
             />
           </View>
           {errors.servicePrice && (
-            <Text style={styles.errorText}>{errors.servicePrice}</Text>
+            <AppText style={styles.errorText}>{errors.servicePrice}</AppText>
           )}
         </View> */}
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Need BW Team Support</Text>
+          <AppText style={styles.label}>Need BW Team Support</AppText>
           <View style={styles.radioContainer}>
             <TouchableOpacity
               style={styles.radioButton}
@@ -632,7 +633,7 @@ const AddProfessionScreen = ({navigation}) => {
                 ]}>
                 {needSupport && <View style={styles.radioInner} />}
               </View>
-              <Text style={styles.radioLabel}>Yes</Text>
+              <AppText style={styles.radioLabel}>Yes</AppText>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.radioButton}
@@ -644,12 +645,12 @@ const AddProfessionScreen = ({navigation}) => {
                 ]}>
                 {!needSupport && <View style={styles.radioInner} />}
               </View>
-              <Text style={styles.radioLabel}>No</Text>
+              <AppText style={styles.radioLabel}>No</AppText>
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Profession Description (Optional)</Text>
+          <AppText style={styles.label}>Profession Description (Optional)</AppText>
           <TextInput
             style={[styles.input, styles.multilineInput]}
             placeholder="Describe your profession, skills, and expertise"
@@ -671,13 +672,13 @@ const AddProfessionScreen = ({navigation}) => {
                 <AntDesign name="checkcircleo" size={24} color="#94A3B8" />
                 )}
             </TouchableOpacity>
-            <Text style={styles.checkboxLabel}>
+            <AppText style={styles.checkboxLabel}>
                 I acknowledge every detail given here is true
-            </Text>
+            </AppText>
             </View>
         )}
         {errors.isAgreed && !editMode && ( // Only show error if not in edit mode
-          <Text style={styles.errorText}>{errors.isAgreed}</Text>
+          <AppText style={styles.errorText}>{errors.isAgreed}</AppText>
         )}
 
         <TouchableOpacity
@@ -691,7 +692,7 @@ const AddProfessionScreen = ({navigation}) => {
             {isLoading ? (
               <ActivityIndicator size="small" color="#FFFFFF" />
             ) : (
-              <Text style={styles.submitButtonText}>{submitButtonText}</Text>
+              <AppText style={styles.submitButtonText} semiBold>{submitButtonText}</AppText>
             )}
           </LinearGradient>
         </TouchableOpacity>
@@ -712,8 +713,8 @@ const AddProfessionScreen = ({navigation}) => {
                 color="#1E40AF"
                 style={styles.modalIcon}
               />
-              <Text style={styles.modalTitle}>Registration Successful!</Text>
-              <Text style={styles.modalText}>Your professional profile has been submitted.</Text>
+              <AppText style={styles.modalTitle} bold>Registration Successful!</AppText>
+              <AppText style={styles.modalText}>Your professional profile has been submitted.</AppText>
               <TouchableOpacity
                 style={styles.modalButton}
                 onPress={() => {
@@ -723,7 +724,7 @@ const AddProfessionScreen = ({navigation}) => {
                 <LinearGradient
                   colors={['#1E40AF', '#3B82F6']}
                   style={styles.modalButtonGradient}>
-                  <Text style={styles.modalButtonText}>Continue</Text>
+                  <AppText style={styles.modalButtonText} semiBold>Continue</AppText>
                 </LinearGradient>
               </TouchableOpacity>
             </View>
@@ -747,8 +748,8 @@ const AddProfessionScreen = ({navigation}) => {
                 color="#1E40AF" // Or your success color
                 style={styles.modalIcon}
               />
-              <Text style={styles.modalTitle}>Update Successful!</Text>
-              <Text style={styles.modalText}>Your professional profile has been updated.</Text>
+              <AppText style={styles.modalTitle} bold>Update Successful!</AppText>
+              <AppText style={styles.modalText}>Your professional profile has been updated.</AppText>
               <TouchableOpacity
                 style={styles.modalButton}
                 onPress={() => {
@@ -758,7 +759,7 @@ const AddProfessionScreen = ({navigation}) => {
                 <LinearGradient
                   colors={['#1E40AF', '#3B82F6']} // Or your success button colors
                   style={styles.modalButtonGradient}>
-                  <Text style={styles.modalButtonText}>Continue</Text>
+                  <AppText style={styles.modalButtonText} semiBold>Continue</AppText>
                 </LinearGradient>
               </TouchableOpacity>
             </View>

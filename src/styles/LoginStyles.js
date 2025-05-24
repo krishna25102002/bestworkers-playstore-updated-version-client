@@ -18,17 +18,17 @@ export default StyleSheet.create({
   },
   logoText: {
     fontSize: 36,
-    fontWeight: '700',
+    // fontWeight: '700', // Handled by AppText bold prop
     color: 'white',
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
+    // fontFamily: 'Poppins-Bold', // Handled by AppText bold prop
     letterSpacing: 1.2,
   },
   logoSubtext: {
     fontSize: 14,
     color: 'rgba(255,255,255,0.8)',
     marginTop: 5,
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
-    fontWeight: '300',
+    // fontFamily: 'Poppins-Light', // Handled by AppText light prop
+    // fontWeight: '300', // Handled by AppText light prop
     letterSpacing: 0.5,
   },
   formContainer: {
@@ -54,27 +54,27 @@ export default StyleSheet.create({
   },
   welcomeText: {
     fontSize: 26,
-    fontWeight: '700',
+    // fontWeight: '700', // Handled by AppText bold prop
     color: '#2c3e50',
     marginBottom: 5,
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
+    // fontFamily: 'Poppins-Bold', // Handled by AppText bold prop
   },
   subtitleText: {
     fontSize: 15,
     color: '#7f8c8d',
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
-    fontWeight: '400',
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
+    // fontWeight: '400', // Handled by AppText
   },
   inputContainer: {
     marginBottom: 25,
   },
   label: {
     fontSize: 12,
-    fontWeight: '600',
+    // fontWeight: '600', // Handled by AppText semiBold prop
     color: '#7f8c8d',
     marginBottom: 8,
     letterSpacing: 0.5,
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
+    // fontFamily: 'Poppins-SemiBold', // Handled by AppText semiBold prop
   },
   input: {
     height: 56,
@@ -85,7 +85,7 @@ export default StyleSheet.create({
     color: '#2c3e50',
     borderWidth: 1,
     borderColor: '#ecf0f1',
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
+    fontFamily: 'Poppins-Regular', // Explicitly for TextInput
   },
   forgotPin: {
     alignSelf: 'flex-end',
@@ -94,8 +94,8 @@ export default StyleSheet.create({
   forgotPinText: {
     color: '#3498db',
     fontSize: 14,
-    fontWeight: '600',
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
+    // fontWeight: '600', // Handled by AppText semiBold prop
+    // fontFamily: 'Poppins-SemiBold', // Handled by AppText semiBold prop
   },
   loginButton: {
     height: 56,
@@ -111,9 +111,9 @@ export default StyleSheet.create({
   loginButtonText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: '600',
+    // fontWeight: '600', // Handled by AppText semiBold prop
     letterSpacing: 0.5,
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
+    // fontFamily: 'Poppins-SemiBold', // Handled by AppText semiBold prop
   },
   divider: {
     flexDirection: 'row',
@@ -128,9 +128,9 @@ export default StyleSheet.create({
   dividerText: {
     paddingHorizontal: 10,
     color: '#bdc3c7',
-    fontWeight: '600',
+    // fontWeight: '600', // Handled by AppText semiBold prop
     fontSize: 12,
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
+    // fontFamily: 'Poppins-SemiBold', // Handled by AppText semiBold prop
   },
   createAccountButton: {
     height: 56,
@@ -143,8 +143,8 @@ export default StyleSheet.create({
   createAccountButtonText: {
     color: '#3498db',
     fontSize: 15,
-    fontWeight: '600',
+    // fontWeight: '600', // Handled by AppText semiBold prop
     letterSpacing: 0.5,
-    fontFamily: Platform.OS === 'ios' ? 'Helvetica Neue' : 'sans-serif',
+    // fontFamily: 'Poppins-SemiBold', // Handled by AppText semiBold prop
   },
 });

@@ -12,6 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
+import AppText from './AppText'; // Import AppText
 import { getUserProfile } from '../services/api'; // Import the getUserProfile function
 
 const ROYAL_BLUE = '#1a4b8c';
@@ -79,18 +80,18 @@ const SideMenu = ({ isVisible, onClose, navigation, setIsLoggedIn }) => {
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
             >
-              {/* <View style={styles.profileImageContainer}>
+              <View style={styles.profileImageContainer}>
                 <Image
                   source={{ uri: userData?.avatar || 'https://via.placeholder.com/100' }}
                   style={styles.profileImage}
                 />
-              </View> */}
+              </View>
               {loading ? (
-                <Text style={styles.profileName}>Loading...</Text>
+                <AppText style={styles.profileName} bold>Loading...</AppText>
               ) : (
                 <>
-                  <Text style={styles.profileName}>{userData?.name || 'Your Name'}</Text>
-                  <Text style={styles.profileEmail}>{userData?.email || 'your.email@example.com'}</Text>
+                  <AppText style={styles.profileName} bold>{userData?.name || 'Your Name'}</AppText>
+                  <AppText style={styles.profileEmail}>{userData?.email || 'your.email@example.com'}</AppText>
                 </>
               )}
             </LinearGradient>
@@ -107,7 +108,7 @@ const SideMenu = ({ isVisible, onClose, navigation, setIsLoggedIn }) => {
                 }}
               >
                 <Icon name={item.icon} size={24} color={WHITE} />
-                <Text style={styles.menuItemText}>{item.label}</Text>
+                <AppText style={styles.menuItemText}>{item.label}</AppText>
               </TouchableOpacity>
             ))}
 
@@ -118,10 +119,10 @@ const SideMenu = ({ isVisible, onClose, navigation, setIsLoggedIn }) => {
               onPress={handleLogout}
             >
               <Icon name="logout" size={24} color={WHITE} />
-              <Text style={styles.menuItemText}>Logout</Text>
+              <AppText style={styles.menuItemText}>Logout</AppText>
             </TouchableOpacity>
 
-            <Text style={styles.versionText}>Version 2.0</Text>
+            <AppText style={styles.versionText}>Version 2.0</AppText>
           </ScrollView>
         </View>
 
@@ -171,14 +172,19 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   profileName: {
-    fontSize: 18,
-    fontWeight: 'bold',
+     textAlign: 'center',
+    fontSize: 15,
+    // fontWeight: 'bold', // Handled by AppText bold prop
     color: WHITE,
+   
     marginBottom: 5,
   },
   profileEmail: {
+     textAlign: 'center',
     fontSize: 14,
+     marginleft: 10,
     color: 'rgba(255, 255, 255, 0.8)',
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     marginBottom: 10,
   },
   divider: {
@@ -193,8 +199,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   menuItemText: {
-    fontSize: 16,
+    fontSize: 14,
     color: WHITE,
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     marginLeft: 15,
   },
   logoutButton: {
@@ -207,6 +214,7 @@ const styles = StyleSheet.create({
   versionText: {
     color: 'rgba(255, 255, 255, 0.5)',
     fontSize: 12,
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     textAlign: 'center',
     marginTop: 30,
     marginBottom: 20,

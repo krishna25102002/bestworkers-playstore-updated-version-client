@@ -20,8 +20,8 @@ android {
         applicationId "com.bestworkers"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 4.5
-        versionName "4.5"
+        versionCode 6
+        versionName "6.0"
         multiDexEnabled true
     }
 

@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+const PRIMARY_COLOR = '#1a4b8c'; // Royal blue
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -33,7 +35,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     fontSize: 14,
     color: '#505F79',
-    fontWeight: '500',
+    // fontWeight: '500', // Handled by AppText
   },
   searchContainer: {
     flexDirection: 'row',
@@ -53,6 +55,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
     paddingVertical: 8,
+    fontFamily: 'Poppins-Regular', // For TextInput
   },
   searchIcon: {
     marginRight: 10,
@@ -72,8 +75,8 @@ const styles = StyleSheet.create({
   },
   sortTitle: {
     fontSize: 14,
-    fontWeight: 'bold',
     marginRight: 12,
+    // fontFamily: 'Poppins-Bold', // Handled by AppText
     color: '#505F79',
   },
   sortOptions: {
@@ -88,16 +91,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#F0F0F0',
   },
   activeSortButton: {
-    backgroundColor: '#2E5BFF',
+    backgroundColor: PRIMARY_COLOR,
   },
   sortButtonText: {
     fontSize: 13,
     color: '#505F79',
-    fontWeight: '500',
+    // fontWeight: '500', // Handled by AppText
   },
   activeSortButtonText: {
     color: 'white',
-    fontWeight: 'bold',
+    // fontWeight: 'bold', // Handled by AppText with bold prop
   },
   listContainer: {
     padding: 16,
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     fontSize: 16,
     color: '#505F79',
-    fontWeight: '500',
+    // fontWeight: '500', // Handled by AppText
   },
   noResultsContainer: {
     flex: 1,
@@ -124,12 +127,13 @@ const styles = StyleSheet.create({
   },
   noResultsTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#505F79',
+    // fontFamily: 'Poppins-Bold', // Handled by AppText
     marginTop: 16,
   },
   noResultsSubtext: {
     fontSize: 14,
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     color: '#8C95A6',
     marginTop: 8,
     textAlign: 'center',

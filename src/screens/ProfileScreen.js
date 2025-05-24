@@ -18,7 +18,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getUserProfile} from '../services/api';
 import SideMenu from '../components/SideMenu';
 import LinearGradient from 'react-native-linear-gradient';
+import AppText from '../components/AppText'; // Import AppText
 import {styles} from '../styles/ProfileStyles';
+
+const PRIMARY_COLOR = '#1a4b8c'; // Royal blue from HomeStyles
 
 const ProfileScreen = ({navigation}) => {
   const [userId, setUserId] = useState('');
@@ -164,10 +167,10 @@ const ProfileScreen = ({navigation}) => {
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="light-content" />
         <LinearGradient
-          colors={['#4A90E2', '#5A6BFF']}
+          colors={[PRIMARY_COLOR, PRIMARY_COLOR]} // Updated
           style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#FFFFFF" />
-          <Text style={styles.loadingText}>Logging out...</Text>
+          <AppText style={styles.loadingText}>Logging out...</AppText>
         </LinearGradient>
       </SafeAreaView>
     );
@@ -179,10 +182,10 @@ const ProfileScreen = ({navigation}) => {
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="light-content" />
         <LinearGradient
-          colors={['#4A90E2', '#5A6BFF']}
+          colors={[PRIMARY_COLOR, PRIMARY_COLOR]} // Updated
           style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#FFFFFF" />
-          <Text style={styles.loadingText}>Loading profile...</Text>
+          <AppText style={styles.loadingText}>Loading profile...</AppText>
         </LinearGradient>
       </SafeAreaView>
     );
@@ -195,10 +198,10 @@ const ProfileScreen = ({navigation}) => {
         <StatusBar barStyle="light-content" />
         <View style={styles.errorContainer}>
            <Icon name="alert-circle-outline" size={80} color="#FF3B30" />
-          <Text style={styles.errorTitle}>Oops!</Text>
-          <Text style={styles.errorText}>{error}</Text>
+          <AppText style={styles.errorTitle} bold>Oops!</AppText>
+          <AppText style={styles.errorText}>{error}</AppText>
           <TouchableOpacity style={styles.retryButton} onPress={initializeData}>
-            <Text style={styles.retryButtonText}>Try Again</Text>
+            <AppText style={styles.retryButtonText} semiBold>Try Again</AppText>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -227,14 +230,14 @@ const ProfileScreen = ({navigation}) => {
           },
         ]}>
         <LinearGradient
-          colors={['#4A90E2', '#5A6BFF']}
+          colors={[PRIMARY_COLOR, PRIMARY_COLOR]} // Updated
           style={styles.gradientHeader}>
           <TouchableOpacity
             style={styles.menuButton}
             onPress={() => setIsMenuVisible(true)}>
             <Icon name="menu" size={28} color="#FFFFFF" />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>My Profile</Text>
+          <AppText style={styles.headerTitle} bold>My Profile</AppText>
           <View style={styles.menuButton} /> 
         </LinearGradient>
       </Animated.View>
@@ -246,8 +249,8 @@ const ProfileScreen = ({navigation}) => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={['#4A90E2']}
-            tintColor="#4A90E2"
+            colors={[PRIMARY_COLOR]} // Updated
+            tintColor={PRIMARY_COLOR} // Updated
           />
         }
         scrollEventThrottle={16}
@@ -265,36 +268,36 @@ const ProfileScreen = ({navigation}) => {
               />
             ) : (
               <LinearGradient
-                colors={['#5A6BFF', '#4A90E2']}
+                colors={[PRIMARY_COLOR, '#2980b9']} // Updated, using a slightly lighter shade for gradient if desired
                 style={styles.avatarPlaceholder}>
-                <Text style={styles.avatarInitial}>
+                <AppText style={styles.avatarInitial} bold>
                   {userData?.name ? userData.name.charAt(0).toUpperCase() : '?'}
-                </Text>
+                </AppText>
               </LinearGradient>
             )}
           </View>
 
-          <Text style={styles.userName}>{userData?.name || 'Your Name'}</Text>
+          <AppText style={styles.userName} bold>{userData?.name || 'Your Name'}</AppText>
 
           <View style={styles.userInfoContainer}>
             <View style={styles.infoItem}>
-              <Icon name="mail-outline" size={18} color="#4A90E2" />
-              <Text style={styles.infoText}>
+              <Icon name="mail-outline" size={18} color={PRIMARY_COLOR} /> 
+              <AppText style={styles.infoText}>
                 {userData?.email || 'your.email@example.com'}
-              </Text>
+              </AppText>
             </View>
 
             <View style={styles.infoItem}>
-              <Icon name="call-outline" size={18} color="#4A90E2" />
-              <Text style={styles.infoText}>
+              <Icon name="call-outline" size={18} color={PRIMARY_COLOR} />
+              <AppText style={styles.infoText}>
                 {userData?.mobile || '+1 234 567 890'}
-              </Text>
+              </AppText>
             </View>
 
             {userData?.location && (
               <View style={styles.infoItem}>
-                <Icon name="location-outline" size={18} color="#4A90E2" />
-                <Text style={styles.infoText}>{userData.location}</Text>
+                <Icon name="location-outline" size={18} color={PRIMARY_COLOR} />
+                <AppText style={styles.infoText}>{userData.location}</AppText>
               </View>
             )}
           </View>
@@ -307,26 +310,26 @@ const ProfileScreen = ({navigation}) => {
             end={{x: 1, y: 1}}
             style={styles.professionBanner}>
             <View style={styles.professionIconContainer}>
-              <MaterialIcons name="work-outline" size={28} color="#4A90E2" />
+              <MaterialIcons name="work-outline" size={28} color={PRIMARY_COLOR} />
             </View>
-            <Text style={styles.professionTitle}>
+            <AppText style={styles.professionTitle} bold>
               Add Your Professional Profile
-            </Text>
-            <Text style={styles.professionText}>
+            </AppText>
+            <AppText style={styles.professionText}>
               Showcase your skills and services to connect with potential clients.
               Create a professional profile to get discovered.
-            </Text>
+            </AppText>
             <TouchableOpacity
               style={styles.addProfessionButton}
               onPress={() => navigation.navigate('AddProfession')}>
               <LinearGradient
-                colors={['#4A90E2', '#5A6BFF']}
+                colors={[PRIMARY_COLOR, '#2980b9']} // Updated
                 start={{x: 0, y: 0}}
                 end={{x: 1, y: 0}}
                 style={styles.gradientButton}>
-                <Text style={styles.addButtonText}>
+                <AppText style={styles.addButtonText} semiBold>
                   Create Professional Profile
-                </Text>
+                </AppText>
                 <Icon name="arrow-forward" size={18} color="#FFFFFF" />
               </LinearGradient>
             </TouchableOpacity>
@@ -340,35 +343,37 @@ const ProfileScreen = ({navigation}) => {
             <View style={styles.professionIconContainer}>
               <MaterialIcons name="verified" size={28} color="#4CAF50" />
             </View>
-            <Text style={styles.professionTitle}>
+            <AppText style={styles.professionTitle} bold>
               Professional Profile Active
-            </Text>
-            <Text style={styles.professionText}>
+            </AppText>
+            <AppText style={styles.professionText}>
               You're now visible to potential clients! Enjoy your free trial of
               BestWorkers and start getting job offers.
-            </Text>
+            </AppText>
           </LinearGradient>
         )}
 
         <View style={styles.actionsContainer}>
-        <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => navigation.navigate('AddProfession', { editMode: true, existingData: userData })}>
-            <View
-              style={[
-                styles.actionIconContainer,
-                {backgroundColor: '#E0F2F7'}, // A light blue/teal for edit
-              ]}>
-              <Icon name="create-outline" size={24} color="#00796B" />
-            </View>
-            <View style={styles.actionTextContainer}>
-              <Text style={[styles.actionTitle, {color: '#00796B'}]}>
-                Edit Profile
-              </Text>
-              <Text style={styles.actionSubtitle}>Update your personal details</Text>
-            </View>
-            <Icon name="chevron-forward" size={22} color="#A0A0A0" />
-          </TouchableOpacity>
+      {isProfession && (
+          <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => navigation.navigate('AddProfession', { editMode: true, existingData: userData })}>
+              <View
+                style={[
+                  styles.actionIconContainer,
+                  {backgroundColor: '#E0F2F7'}, // A light blue/teal for edit
+                ]}>
+                <Icon name="create-outline" size={24} color="#00796B" />
+              </View>
+              <View style={styles.actionTextContainer}>
+                <AppText style={[styles.actionTitle, {color: '#00796B'}]} semiBold>
+                  Edit Profile
+                </AppText>
+                <AppText style={styles.actionSubtitle}>Update your professional details</AppText>
+              </View>
+              <Icon name="chevron-forward" size={22} color="#A0A0A0" />
+            </TouchableOpacity>
+        )}
           <TouchableOpacity style={styles.actionButton} onPress={handleLogout}>
             <View
               style={[
@@ -378,12 +383,12 @@ const ProfileScreen = ({navigation}) => {
               <Icon name="log-out-outline" size={24} color="#F44336" />
             </View>
             <View style={styles.actionTextContainer}>
-              <Text style={[styles.actionTitle, {color: '#F44336'}]}>
+              <AppText style={[styles.actionTitle, {color: '#F44336'}]} semiBold>
                 Logout
-              </Text>
-              <Text style={styles.actionSubtitle}>
+              </AppText>
+              <AppText style={styles.actionSubtitle}>
                 Sign out from your account
-              </Text>
+              </AppText>
             </View>
             <Icon name="chevron-forward" size={22} color="#A0A0A0" />
           </TouchableOpacity>

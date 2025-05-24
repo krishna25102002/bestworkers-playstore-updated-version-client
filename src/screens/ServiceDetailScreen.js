@@ -13,6 +13,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import ProfessionalCard from '../components/ProfessionalCard';
 import { getProfessionalsByService } from '../services/api';
 import styles from '../styles/ServiceDetailStyles';
+import AppText from '../components/AppText'; // Import AppText
+
+const PRIMARY_COLOR = '#1a4b8c'; // Royal blue from HomeStyles
 
 // Function to generate random background color
 const getRandomColor = () => {
@@ -32,13 +35,14 @@ const ServiceDetailScreen = ({ navigation, route }) => {
     navigation.setOptions({
       title: service === 'Explore others' ? `Other ${category}` : service, // More specific title
       headerStyle: {
-        backgroundColor: '#2E5BFF',
+        backgroundColor: PRIMARY_COLOR,
         elevation: 0,
         shadowOpacity: 0,
       },
       headerTintColor: '#fff',
       headerTitleStyle: {
-        fontWeight: 'bold',
+        // fontWeight: 'bold', // Will be handled by Poppins-Bold if AppText is used in header
+        fontFamily: 'Poppins-Bold', // Explicitly set for header title
       },
     });
 
@@ -117,25 +121,25 @@ const ServiceDetailScreen = ({ navigation, route }) => {
     <TouchableOpacity
       style={[styles.sortButton, sortBy === option && styles.activeSortButton]}
       onPress={() => setSortBy(option)}>
-      <Text style={[styles.sortButtonText, sortBy === option && styles.activeSortButtonText]}>
+      <AppText style={[styles.sortButtonText, sortBy === option && styles.activeSortButtonText]}>
         {label}
-      </Text>
+      </AppText>
     </TouchableOpacity>
   );
 
   const renderEmptyState = () => (
     <View style={styles.noResultsContainer}>
-      <Icon name="search-off" size={64} color="#2E5BFF" />
-      <Text style={styles.noResultsTitle}>No professionals found</Text>
-      <Text style={styles.noResultsSubtext}>
+      <Icon name="search-off" size={64} color={PRIMARY_COLOR} />
+      <AppText style={styles.noResultsTitle} bold>No professionals found</AppText>
+      <AppText style={styles.noResultsSubtext}>
         Try adjusting your search or check back later
-      </Text>
+      </AppText>
     </View>
   );
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#2E5BFF" barStyle="light-content" />
+      <StatusBar backgroundColor={PRIMARY_COLOR} barStyle="light-content" />
 
       <View style={styles.headerContainer}>
         <View style={styles.searchContainer}>
@@ -158,26 +162,25 @@ const ServiceDetailScreen = ({ navigation, route }) => {
 
         <View style={styles.infoContainer}>
           <View style={styles.serviceInfo}>
-            <Icon name="info-outline" size={20} color="#2E5BFF" />
-            <Text style={styles.serviceInfoText}>
+            <Icon name="info-outline" size={20} color={PRIMARY_COLOR} />
+            <AppText style={styles.serviceInfoText} medium>
             Showing {filteredProfessionals.length} {service === 'Explore others' ? 'other' : service} professionals{category && service !== 'Explore others' ? ` in ${category}` : ''}
-            </Text>
+            </AppText>
           </View>
         </View>
 
         <View style={styles.sortContainer}>
-          <Text style={styles.sortTitle}>Sort by:</Text>
+          <AppText style={styles.sortTitle} bold>Sort by:</AppText>
           <View style={styles.sortOptions}>
             {renderSortButton('experience', 'Experience')}
             {/* {renderSortButton('price', 'Price')}  // Price sort button commented out */}
           </View>
         </View>
       </View>
-
       {loading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#2E5BFF" />
-          <Text style={styles.loadingText}>Finding the best professionals...</Text>
+          <ActivityIndicator size="large" color={PRIMARY_COLOR} />
+          <AppText style={styles.loadingText} medium>Finding the best professionals...</AppText>
         </View>
       ) : (
         <FlatList

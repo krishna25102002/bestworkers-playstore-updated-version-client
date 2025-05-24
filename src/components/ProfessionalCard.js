@@ -1,24 +1,26 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import AppText from '../components/AppText'; // Import your custom AppText
+
 
 const ProfessionalCard = ({ professional, onPress }) => {
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
       <View style={[styles.avatar, { backgroundColor: professional.bgColor || '#2E5BFF' }]}>
-        <Text style={styles.avatarText}>{professional.initial || 'P'}</Text>
+        <AppText style={styles.avatarText}>{professional.initial || 'P'}</AppText>
       </View>
       <View style={styles.info}>
-        <Text style={styles.name}>{professional.name || 'Unknown'}</Text>
+        <AppText style={styles.name}>{professional.name || 'Unknown'}</AppText>
         <View style={styles.detailRow}>
-          <Icon name="work" size={18} color="#8C95A6" />
-          <Text style={styles.designationText}>
+          <Icon name="work" size={17} color="#8C95A6" />
+          <AppText style={styles.designationText} bold>
             {professional.designation || professional.service || 'N/A'}
-          </Text>
+          </AppText>
         </View>
         <View style={styles.detailRow}>
           <Icon name="access-time" size={16} color="#8C95A6" />
-          <Text style={styles.experienceText}>{professional.experience || 'N/A'} years exp</Text>
+          <AppText style={styles.experienceText}>{professional.experience || 'N/A'} years exp</AppText>
         </View>
         {/* Price information commented out
         <View style={styles.detailRow}>
@@ -65,17 +67,17 @@ const styles = StyleSheet.create({
   avatarText: {
     color: '#FFFFFF',
     fontSize: 20,
-    fontWeight: '600',
+    // fontWeight: '600', // Handled by AppText semiBold or bold prop
   },
   info: {
     flex: 1,
     justifyContent: 'center',
   },
   name: {
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: 16,
+    // fontWeight: '700', // Handled by AppText bold prop
     color: '#1A1A1A',
-    marginBottom: 8,
+    marginBottom: 1,
   },
   detailRow: {
     flexDirection: 'row',
@@ -85,6 +87,7 @@ const styles = StyleSheet.create({
   detailText: {
     fontSize: 18,
     color: '#505F79',
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     marginLeft: 8,
   },
   
@@ -97,14 +100,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
     designationText: { // New style for designation/service
-    fontWeight: 'bold', // Make it bold
+    // fontWeight: 'bold', // Handled by AppText bold prop
     fontSize: 17,       // Slightly larger font size (adjust as needed)
     color: '#333333',   // Darker color for more prominence
     marginLeft: 8,
     flexShrink: 1, // Allow text to shrink if needed
   },
   experienceText: { // New style for experience
-    // fontWeight: '400', // Default fontWeight is 400, explicitly setting it
+    // fontWeight: '400', // Handled by AppText
     fontSize: 14,
     color: '#505F79',
     marginLeft: 8,
@@ -113,6 +116,7 @@ const styles = StyleSheet.create({
   detailText: { // Kept for reference or if used elsewhere, but experienceText is more specific now
     fontSize: 18, // Original size
     color: '#505F79',
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     marginLeft: 8,
   },
 

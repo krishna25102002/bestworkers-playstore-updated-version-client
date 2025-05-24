@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+const PRIMARY_COLOR = '#1a4b8c'; // Royal blue
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -32,13 +34,13 @@ const styles = StyleSheet.create({
   },
   avatarLetter: {
     color: 'white',
-    fontSize: 40,
-    fontWeight: 'bold',
+    fontSize: 35,
+    // fontWeight: 'bold', // Handled by AppText
   },
   profileName: {
-    fontSize: 26,
-    fontWeight: 'bold',
+    fontSize: 24,
     color: '#333',
+    // fontFamily: 'Poppins-Bold', // Handled by AppText
     marginBottom: 8,
   },
   badgeContainer: {
@@ -52,10 +54,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginHorizontal: 4,
   },
-  badgeText: {
-    color: '#2E5BFF',
+  badgeText: { // Consider if this should also be PRIMARY_COLOR or a contrasting color
+    color: PRIMARY_COLOR, // Changed to primary, adjust if contrast is an issue
     fontSize: 14,
-    fontWeight: '500',
+    // fontWeight: '500', // Handled by <AppText medium>
   },
   statsContainer: {
     flexDirection: 'row',
@@ -74,8 +76,8 @@ const styles = StyleSheet.create({
   statText: {
     marginLeft: 8,
     fontSize: 14,
-    color: '#505F79',
-    fontWeight: '500',
+    color: '#505F79', // Handled by <AppText medium>
+    // fontWeight: '500',
   },
   statDivider: {
     width: 1,
@@ -101,8 +103,8 @@ const styles = StyleSheet.create({
   },
   pricingTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
     color: '#505F79',
+    // fontFamily: 'Poppins-Bold', // Handled by AppText
   },
   priceBadge: {
     backgroundColor: '#EEFBF5',
@@ -113,7 +115,7 @@ const styles = StyleSheet.create({
   priceBadgeText: {
     color: '#36B37E',
     fontSize: 12,
-    fontWeight: 'bold',
+    // fontWeight: 'bold', // Handled by AppText
   },
   priceRow: {
     flexDirection: 'row',
@@ -121,8 +123,8 @@ const styles = StyleSheet.create({
   },
   priceValue: {
     fontSize: 26,
-    fontWeight: 'bold',
-    color: '#2E5BFF',
+    color: PRIMARY_COLOR,
+    // fontFamily: 'Poppins-Bold', // Handled by AppText
   },
   priceUnit: {
     fontSize: 16,
@@ -136,15 +138,15 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#333',
-    marginBottom: 12,
+    // fontFamily: 'Poppins-Bold', // Handled by AppText
+    marginBottom: 6,
     marginLeft: 4,
   },
   locationCard: {
     backgroundColor: 'white',
     borderRadius: 16,
-    padding: 16,
+    padding: 13,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
@@ -158,13 +160,14 @@ const styles = StyleSheet.create({
   },
   locationTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
     color: '#505F79',
+    // fontFamily: 'Poppins-Bold', // Handled by AppText
     marginLeft: 8,
   },
   locationText: {
     fontSize: 15,
     color: '#505F79',
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     lineHeight: 22,
   },
   detailItem: {
@@ -186,15 +189,17 @@ const styles = StyleSheet.create({
   detailTitle: {
     fontSize: 14,
     color: '#8C95A6',
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     marginBottom: 4,
   },
   detailValue: {
     fontSize: 16,
     color: '#505F79',
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
   },
   importantValue: {
-    color: '#2E5BFF',
-    fontWeight: 'bold',
+    color: PRIMARY_COLOR,
+    // fontWeight: 'bold', // Handled by AppText with bold prop
   },
   comingSoonContainer: {
     alignItems: 'center',
@@ -209,12 +214,13 @@ const styles = StyleSheet.create({
   },
   comingSoonText: {
     fontSize: 18,
-    fontWeight: 'bold',
     color: '#333',
+    // fontFamily: 'Poppins-Bold', // Handled by AppText
     marginTop: 16,
   },
   comingSoonSubtext: {
     fontSize: 14,
+    // fontFamily: 'Poppins-Regular', // Handled by AppText
     color: '#8C95A6',
     textAlign: 'center',
     marginTop: 8,
@@ -233,14 +239,14 @@ const styles = StyleSheet.create({
   contactButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#2E5BFF',
+    backgroundColor: PRIMARY_COLOR, // Default contact button to primary
     paddingVertical: 14,
     paddingHorizontal: 20,
     borderRadius: 12,
     flex: 1,
     marginHorizontal: 6,
     justifyContent: 'center',
-    shadowColor: '#2E5BFF',
+    shadowColor: PRIMARY_COLOR,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 6,
@@ -248,12 +254,12 @@ const styles = StyleSheet.create({
   },
   callButton: {
     backgroundColor: '#36B37E',
-    shadowColor: '#36B37E',
+    shadowColor: '#36B37E', // Kept green shadow for call button
   },
   buttonText: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: 'bold',
+    // fontWeight: 'bold', // Handled by AppText
     marginLeft: 8,
   },
 });
