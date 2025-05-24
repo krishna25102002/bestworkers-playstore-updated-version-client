@@ -10,7 +10,7 @@ import {
   TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import ProfessionalCard from '../components/ProfessionalCard';
+import ProfessionalCard from '../components/ProfessionalCard'; // Ensure this path is correct
 import { getProfessionalsByService } from '../services/api';
 import styles from '../styles/ServiceDetailStyles';
 import AppText from '../components/AppText'; // Import AppText
@@ -59,12 +59,14 @@ const ServiceDetailScreen = ({ navigation, route }) => {
         const formattedProfessionals = response.data.map(prof => ({
           id: prof._id,
           name: prof.name,
-          avatar: prof.imageUrl || '',
+          // avatar: prof.imageUrl || '', // We'll use hasAvatar and userIdForAvatar
           initial: prof.name.charAt(0).toUpperCase(),
           bgColor: getRandomColor(),
           experience: parseInt(prof.experience.split('-')[1]) || 2,
           service: prof.serviceName, // This will be 'Explore others' for custom services
           city: prof.city,
+          userIdForAvatar: prof.userIdForAvatar, // Get the user ID for avatar
+          hasAvatar: prof.hasAvatar,             // Get the hasAvatar flag
           // price: prof.servicePrice, // Commented out
           // priceUnit: prof.priceUnit, // Commented out
           email: prof.email,

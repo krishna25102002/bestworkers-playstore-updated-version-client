@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -7,15 +7,22 @@ import {
   TouchableOpacity,
   Alert,
   Linking,
+  Modal, // Import Modal
+  Image, // Import Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from '../styles/ProfessionalDetailStyles';
 import AppText from '../components/AppText'; // Import AppText
+import { getAvatarUrl } from '../services/api'; // Import getAvatarUrl
 
 const PRIMARY_COLOR = '#1a4b8c'; // Royal blue
 
 const ProfessionalDetailScreen = ({ navigation, route }) => {
   const { professional } = route.params;
+  // Use a timestamp for cache-busting the avatar
+  const avatarTimestamp = React.useMemo(() => Date.now(), [professional.hasAvatar, professional.userIdForAvatar]);
+  const [isPreviewModalVisible, setIsPreviewModalVisible] = useState(false);
+  const [previewImageUri, setPreviewImageUri] = useState(null);
 
   useEffect(() => {
     navigation.setOptions({
@@ -66,16 +73,32 @@ const ProfessionalDetailScreen = ({ navigation, route }) => {
     }
   };
 
+  const handleImageTap = () => {
+    if (professional.hasAvatar && professional.userIdForAvatar) {
+      setPreviewImageUri(getAvatarUrl(professional.userIdForAvatar, avatarTimestamp));
+      setIsPreviewModalVisible(true);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Profile Header */}
-        <View style={styles.profileHeader}>
-          <View style={[styles.avatarCircle, { backgroundColor: professional.bgColor }]}>
-            <AppText style={styles.avatarLetter} bold>
-              {professional.initial}
-            </AppText>
-          </View>
+        <View style={styles.profileHeader}> 
+          <TouchableOpacity
+            onPress={handleImageTap} // Changed to onPress
+            disabled={!(professional.hasAvatar && professional.userIdForAvatar)} // Disable if no avatar
+          >
+            {professional.hasAvatar && professional.userIdForAvatar ? (
+              <Image source={{ uri: getAvatarUrl(professional.userIdForAvatar, avatarTimestamp) }} style={styles.avatarImageLarge} />
+            ) : (
+              <View style={[styles.avatarCircle, { backgroundColor: professional.bgColor || PRIMARY_COLOR }]}>
+                <AppText style={styles.avatarLetter} bold>
+                  {professional.initial || professional.name?.charAt(0)?.toUpperCase() || 'P'}
+                </AppText>
+              </View>
+            )}
+          </TouchableOpacity>
 
           <AppText style={styles.profileName} bold>{professional.name}</AppText>
           <View style={styles.badgeContainer}>
@@ -183,6 +206,30 @@ const ProfessionalDetailScreen = ({ navigation, route }) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
+      {/* Image Preview Modal */}
+      <Modal
+        transparent={true}
+        visible={isPreviewModalVisible}
+        onRequestClose={() => setIsPreviewModalVisible(false)} // For Android back button
+        animationType="fade"
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay} // Re-use or create specific style
+          activeOpacity={1}
+          onPress={() => setIsPreviewModalVisible(false)} // Close on tap outside the image
+        >
+          {previewImageUri && (
+            <Image
+              source={{ uri: previewImageUri }}
+              style={styles.previewImage} // Re-use or create specific style
+              resizeMode="contain"
+            />
+          )}
+          <TouchableOpacity style={styles.closeButton} onPress={() => setIsPreviewModalVisible(false)}>
+            {/* <Icon name="close-circle" size={30} color="#FFFFFF" /> */}
+          </TouchableOpacity>
+        </TouchableOpacity>
+      </Modal>
     </SafeAreaView>
   );
 };

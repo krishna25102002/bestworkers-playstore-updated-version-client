@@ -9,6 +9,7 @@ import {
   Modal,
   SafeAreaView,
   ActivityIndicator,
+  Image, // Import Image
   Alert, // Make sure Alert is imported if you use it
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -23,10 +24,11 @@ import {
   serviceNames,
   experienceLevels,
   priceUnits,
-} from '../data/staticData'; // Assuming your staticData.js has all these
-import {addProfession, getUserProfile, updateProfessionalProfile} from '../services/api'; // Added updateProfessionalProfile
+} from '../data/staticData';
+import {addProfession, getUserProfile, updateProfessionalProfile, uploadProfileAvatar, getAvatarUrl} from '../services/api'; // Added uploadProfileAvatar, getAvatarUrl
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native'; // To get route params
+import * as ImagePicker from 'react-native-image-picker'; // Import ImagePicker
 import AppText from '../components/AppText'; // Import AppText
 
 
@@ -54,6 +56,9 @@ const AddProfessionScreen = ({navigation}) => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false); // Added isLoading state
   const [showUpdateSuccessModal, setShowUpdateSuccessModal] = useState(false); // New state for update success
+  const [avatarSource, setAvatarSource] = useState(null); // For image preview
+  const [selectedPhotoAsset, setSelectedPhotoAsset] = useState(null); // To store selected photo asset for upload
+  const [avatarTimestamp, setAvatarTimestamp] = useState(Date.now()); // For cache busting existing avatar
   
   const route = useRoute();
   const { editMode, existingData } = route.params || {};
@@ -64,6 +69,11 @@ const AddProfessionScreen = ({navigation}) => {
   // Populate form if in edit mode or fetch user profile for add mode
   useEffect(() => {
     if (editMode && existingData) {
+      if (existingData.hasAvatar && existingData._id) {
+        const newTimestamp = Date.now();
+        setAvatarTimestamp(newTimestamp);
+        setAvatarSource({ uri: getAvatarUrl(existingData._id, newTimestamp) });
+      }
       console.log("Edit Mode: Populating form with existing data", existingData);
       // Set basic fields
       setName(existingData.name || '');
@@ -197,6 +207,56 @@ const AddProfessionScreen = ({navigation}) => {
     return valid;
   };
 
+  const handleChoosePhoto = () => {
+    ImagePicker.launchImageLibrary(
+      {
+        mediaType: 'photo',
+        includeBase64: false,
+        maxWidth: 1200,
+        maxHeight: 1200,
+        quality: 0.7,
+      },
+      (response) => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.errorCode) {
+          console.log('ImagePicker Error: ', response.errorMessage);
+          Alert.alert('Error', 'Could not select image: ' + response.errorMessage);
+        } else if (response.assets && response.assets.length > 0) {
+          const asset = response.assets[0];
+          setAvatarSource({ uri: asset.uri }); // Preview selected image
+          setSelectedPhotoAsset(asset); // Store asset for upload
+        }
+      },
+    );
+  };
+
+  const uploadAvatarAfterSubmit = async () => {
+    if (!selectedPhotoAsset) return; // No new photo selected
+
+    const formData = new FormData();
+    formData.append('avatar', {
+      uri: selectedPhotoAsset.uri,
+      type: selectedPhotoAsset.type || 'image/jpeg',
+      name: selectedPhotoAsset.fileName || `avatar_${Date.now()}.${(selectedPhotoAsset.type || 'image/jpeg').split('/')[1]}`,
+    });
+
+    try {
+      // setIsLoading(true); // Optionally show loading for avatar upload specifically
+      const result = await uploadProfileAvatar(formData);
+      if (result.success) {
+        console.log('Avatar uploaded successfully after profile save/update.');
+        // Optionally show another success message or just let the main success modal handle it
+      } else {
+        Alert.alert('Avatar Upload Failed', result.error || 'Could not upload profile picture separately.');
+      }
+    } catch (error) {
+      Alert.alert('Avatar Upload Error', error.error || 'An unexpected error occurred during avatar upload.');
+    } finally {
+      // setIsLoading(false);
+    }
+  };
+
   // Handle form submission
   const handleSubmit = async () => {
     if (validateForm()) {
@@ -246,12 +306,14 @@ const AddProfessionScreen = ({navigation}) => {
           await updateProfessionalProfile(formData); // Assuming your API takes all fields
           // Alert.alert("Success", "Profile updated successfully!");
           // navigation.goBack(); // Or navigate to ProfileScreen and refresh
+          if (selectedPhotoAsset) await uploadAvatarAfterSubmit(); // Upload avatar if selected
           setShowUpdateSuccessModal(true); // Show custom modal for update success
           
         } else {
           await addProfession(formData);
           await AsyncStorage.setItem('isProfession', 'true');
-          setShowSuccessModal(true); // Show success modal only for new additions
+          if (selectedPhotoAsset) await uploadAvatarAfterSubmit(); // Upload avatar if selected
+          setShowSuccessModal(true); 
         }
 
       } catch (error) {
@@ -279,6 +341,27 @@ const AddProfessionScreen = ({navigation}) => {
             <AntDesign name="arrowleft" size={24} color="#1E40AF" />
           </TouchableOpacity> 
           <AppText style={styles.header} bold>{screenTitle}</AppText>
+        </View>
+
+        {/* Avatar Upload Section */}
+        <View style={styles.avatarSection}>
+          <TouchableOpacity onPress={handleChoosePhoto} style={styles.avatarContainer}>
+            {avatarSource ? (
+              <Image source={avatarSource} style={styles.avatarImage} key={avatarTimestamp} />
+            ) : (
+              <View style={styles.avatarPlaceholder}>
+                <AntDesign name="camerao" size={40} color="#94A3B8" />
+              </View>
+            )}
+            <View style={styles.cameraIconOverlay}>
+                <AntDesign name="camera" size={18} color="#FFFFFF" />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleChoosePhoto}>
+            <AppText style={styles.changeAvatarText} medium>
+              {avatarSource ? 'Change Profile Photo' : 'Add Profile Photo'}
+            </AppText>
+          </TouchableOpacity>
         </View>
 
         {/* Personal Information */} 

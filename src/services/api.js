@@ -3,8 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const api = axios.create({
-  //baseURL: 'http://192.168.1.4:5000/api', // Your local IP
-  baseURL: 'https://bw-backends-v-2-0.onrender.com/api', // Your deployed server
+  baseURL: 'http://192.168.1.4:5000/api', // Your local IP
+  //baseURL: 'https://bw-backends-v-2-0.onrender.com/api', // Your deployed server
   timeout: 10000, // 10 seconds
   headers: {
     'Content-Type': 'application/json',
@@ -159,6 +159,29 @@ export const getProfessionalsByService = async (serviceName, serviceCategory = n
     console.error('Get Professionals by Service/Category API error:', error.response ? error.response.data : error.message);
     throw error;
   }
+};
+
+export const uploadProfileAvatar = async (formData) => {
+  try {
+    // Token is added by the interceptor
+    const response = await api.put('/users/avatar', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error uploading avatar:', error.response ? error.response.data : error.message);
+    throw error.response ? error.response.data : new Error('Avatar upload failed');
+  }
+};
+
+// Helper to construct avatar URL
+// The API_BASE_URL needs to be accessible from where api.js is imported or defined within api.js
+const API_BASE_URL = api.defaults.baseURL; // Get base URL from axios instance
+export const getAvatarUrl = (userId, timestamp = Date.now()) => {
+  // Adding a timestamp query parameter to try and bust cache if image updates
+  return `${API_BASE_URL}/users/${userId}/avatar?t=${timestamp}`;
 };
 
 // export const getProfessionalsByService = async (serviceName) => {

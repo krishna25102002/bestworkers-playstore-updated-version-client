@@ -1,15 +1,24 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AppText from '../components/AppText'; // Import your custom AppText
+import { getAvatarUrl } from '../services/api'; // Import getAvatarUrl
 
 
 const ProfessionalCard = ({ professional, onPress }) => {
+  // Use a timestamp for cache-busting the avatar if it might change frequently
+  // For a list, a static or less frequent timestamp might be okay unless avatars update often.
+  const avatarTimestamp = React.useMemo(() => Date.now(), [professional.hasAvatar, professional.userIdForAvatar]);
+
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
-      <View style={[styles.avatar, { backgroundColor: professional.bgColor || '#2E5BFF' }]}>
-        <AppText style={styles.avatarText}>{professional.initial || 'P'}</AppText>
-      </View>
+      {professional.hasAvatar && professional.userIdForAvatar ? (
+        <Image source={{ uri: getAvatarUrl(professional.userIdForAvatar, avatarTimestamp) }} style={styles.avatarImage} />
+      ) : (
+        <View style={[styles.avatarPlaceholder, { backgroundColor: professional.bgColor || '#2E5BFF' }]}>
+          <AppText style={styles.avatarText}>{professional.initial || 'P'}</AppText>
+        </View>
+      )}
       <View style={styles.info}>
         <AppText style={styles.name}>{professional.name || 'Unknown'}</AppText>
         <View style={styles.detailRow}>
@@ -54,15 +63,22 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 3,
     borderWidth: 1,
-    borderColor: '#F5F5F7',
+    borderColor: '#E0E0E0', // Slightly darker border
   },
-  avatar: {
+  avatarPlaceholder: { // Renamed from avatar to avatarPlaceholder
     width: 48,
     height: 48,
     borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
+  },
+  avatarImage: { // New style for actual image
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    marginRight: 16,
+    backgroundColor: '#F0F0F0', // Background color while image loads
   },
   avatarText: {
     color: '#FFFFFF',

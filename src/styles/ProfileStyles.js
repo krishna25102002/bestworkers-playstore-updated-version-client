@@ -320,4 +320,23 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     // fontWeight: '600', // Handled by <AppText semiBold>
   },
+  // Styles for Image Preview Modal
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.85)', // Darker overlay
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  previewImage: {
+    width: '90%',
+    height: '80%',
+    borderRadius: 10, // Optional: if you want rounded corners for the preview
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 40, // Adjust as needed
+    right: 20, // Adjust as needed
+    padding: 10,
+    zIndex: 1, // Ensure it's above the image
+  },
 });

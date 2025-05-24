@@ -24,6 +24,49 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
   },
+  avatarSection: {
+    alignItems: 'center',
+    marginBottom: 25,
+  },
+  avatarContainer: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F0F0F0', // Placeholder background
+    marginBottom: 10,
+    position: 'relative', // For camera icon overlay
+    borderWidth: 2,
+    borderColor: '#1E40AF',
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 60,
+  },
+  avatarPlaceholder: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#E2E8F0',
+  },
+  cameraIconOverlay: {
+    position: 'absolute',
+    bottom: 5,
+    right: 5,
+    backgroundColor: '#1E40AF',
+    padding: 8,
+    borderRadius: 15,
+  },
+  changeAvatarText: {
+    color: '#1E40AF',
+    fontSize: 15,
+    // fontWeight: '500', // Handled by AppText
+    textDecorationLine: 'underline',
+  },
   sectionHeader: {
     fontSize: 20,
     // fontWeight: '600', // Handled by <AppText semiBold>
@@ -192,6 +235,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.6)',
   },
   modalContent: {
+    textAlign: 'center', 
+    alignItems: 'center',
     backgroundColor: '#fff',
     padding: 30,
     borderRadius: 20,

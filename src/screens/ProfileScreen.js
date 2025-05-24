@@ -1,8 +1,7 @@
-// ProfileScreen.js
+// c:\Users\kd1812\Desktop\BW NEW\BestWorkers_Client\src\screens\ProfileScreen.js
 import React, {useEffect, useState, useCallback} from 'react';
 import {
   View,
-  Text,
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
@@ -11,17 +10,21 @@ import {
   StatusBar,
   RefreshControl,
   Animated,
+  Alert,
+  Modal, // Import Modal
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {getUserProfile} from '../services/api';
+import {getUserProfile, uploadProfileAvatar, getAvatarUrl} from '../services/api';
+import * as ImagePicker from 'react-native-image-picker';
 import SideMenu from '../components/SideMenu';
 import LinearGradient from 'react-native-linear-gradient';
-import AppText from '../components/AppText'; // Import AppText
+import AppText from '../components/AppText';
 import {styles} from '../styles/ProfileStyles';
 
-const PRIMARY_COLOR = '#1a4b8c'; // Royal blue from HomeStyles
+const PRIMARY_COLOR = '#1a4b8c';
+const WHITE = '#FFFFFF'; // Define WHITE if not already defined or imported
 
 const ProfileScreen = ({navigation}) => {
   const [userId, setUserId] = useState('');
@@ -32,13 +35,16 @@ const ProfileScreen = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
   const [scrollY] = useState(new Animated.Value(0));
   const [isProfession, setIsProfession] = useState(false);
-  const [isLoggingOut, setIsLoggingOut] = useState(false); // Flag to prevent re-fetch during logout
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [avatarSource, setAvatarSource] = useState(null); // {uri: '...'}
+  const [avatarTimestamp, setAvatarTimestamp] = useState(Date.now());
+  const [isPreviewModalVisible, setIsPreviewModalVisible] = useState(false);
+  const [previewImageUri, setPreviewImageUri] = useState(null);
 
   const handleLogout = useCallback(async () => {
-    if (isLoggingOut) return; // Prevent multiple logout calls if already in progress
-    setIsLoggingOut(true); // Set flag immediately
+    if (isLoggingOut) return;
+    setIsLoggingOut(true);
     try {
-      console.log('ProfileScreen: Attempting to logout user (handleLogout).');
       await AsyncStorage.removeItem('userToken');
       await AsyncStorage.removeItem('userID');
       await AsyncStorage.removeItem('isProfession');
@@ -46,63 +52,123 @@ const ProfileScreen = ({navigation}) => {
       navigation.replace('Login');
     } catch (e) {
       console.error('Error logging out from ProfileScreen:', e);
-      // If logout fails, we might be stuck. For now, keep isLoggingOut true
-      // as we expect navigation.replace to unmount this screen.
-      // If it doesn't unmount, this could be an issue.
     }
-  }, [navigation, isLoggingOut]); // isLoggingOut is a dependency
+  }, [navigation, isLoggingOut]);
 
   const fetchUserData = useCallback(async () => {
     if (isLoggingOut) {
-      console.log('ProfileScreen: fetchUserData - Logout in progress, skipping.');
       return;
     }
-    console.log('ProfileScreen: fetchUserData - Attempting to fetch, setting loading true.');
-    setLoading(true); // Ensure loading is true at the start of an attempt
-    setError(null); // Clear previous errors
+    setLoading(true);
+    setError(null);
     try {
       const storedUserId = await AsyncStorage.getItem('userID');
-      if (storedUserId && !isLoggingOut) { // Check isLoggingOut before setting state
+      if (storedUserId && !isLoggingOut) {
         setUserId(storedUserId);
       }
       const response = await getUserProfile();
       if (response.success) {
-        console.log('ProfileScreen: fetchUserData - API call successful.');
-        if (!isLoggingOut) setUserData(response.data); // Check flag before setting data
+        if (response.data.hasAvatar && response.data._id) {
+          const newTimestamp = Date.now();
+          setAvatarTimestamp(newTimestamp);
+          setAvatarSource({ uri: getAvatarUrl(response.data._id, newTimestamp) });
+        } else {
+          setAvatarSource(null);
+        }
+        if (!isLoggingOut) setUserData(response.data);
       } else {
-        // This handles cases where api.js might return { success: false, error: '...', status: ... }
         const errorMessage = response.error || 'Failed to fetch user data';
-        console.log('ProfileScreen: fetchUserData - API call not successful:', errorMessage, 'Status:', response.status);
         if (!isLoggingOut) setError(errorMessage);
         if (response.status === 401) {
-          console.error('ProfileScreen: Unauthorized (API response indicated 401). Triggering logout.');
           handleLogout();
         }
       }
     } catch (err) {
-      if (isLoggingOut) return; // Don't process error if already logging out
-      console.error('ProfileScreen: fetchUserData - Error caught:', err.message, 'Response status:', err.response?.status);
+      if (isLoggingOut) return;
       if (err.response && err.response.status === 401) {
         if (!isLoggingOut) setError('Your session has expired. Please log in again.');
-        console.error('ProfileScreen: Unauthorized (HTTP 401 caught). Triggering logout.');
         handleLogout();
       } else {
-        const errorMessage = err.response?.data?.error || err.response?.data?.message || err.message || 'An error occurred while fetching profile';
+        const errorMessage = err.response?.data?.error || err.response?.data?.message || err.message || 'An error occurred';
         if (!isLoggingOut) setError(`Failed to load profile: ${errorMessage}`);
       }
     } finally {
-      if (!isLoggingOut) { // Only update loading state if not in the process of logging out
-        console.log('ProfileScreen: fetchUserData - Finally block, setting loading false.');
+      if (!isLoggingOut) {
         setLoading(false);
         setRefreshing(false);
       }
     }
-  }, [handleLogout, isLoggingOut]); // isLoggingOut is a dependency
+  }, [handleLogout, isLoggingOut]); // avatarTimestamp removed as it's set within
+
+  const handleChoosePhoto = () => {
+    ImagePicker.launchImageLibrary(
+      {
+        mediaType: 'photo',
+        includeBase64: false,
+        maxWidth: 1200,
+        maxHeight: 1200,
+        quality: 0.7,
+      },
+      (response) => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.errorCode) {
+          console.log('ImagePicker Error: ', response.errorMessage);
+          Alert.alert('Error', 'Could not select image: ' + response.errorMessage);
+        } else if (response.assets && response.assets.length > 0) {
+          const asset = response.assets[0];
+          setAvatarSource({ uri: asset.uri }); // Preview selected image locally
+          handleUploadPhoto(asset);
+        }
+      },
+    );
+  };
+
+  const handleUploadPhoto = async (photoAsset) => {
+    if (!photoAsset || !photoAsset.uri) {
+      Alert.alert('Error', 'No photo selected to upload.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('avatar', {
+      uri: photoAsset.uri,
+      type: photoAsset.type || 'image/jpeg',
+      name: photoAsset.fileName || `avatar_${Date.now()}.${(photoAsset.type || 'image/jpeg').split('/')[1]}`,
+    });
+
+    try {
+      setLoading(true); // Show loading indicator for upload
+      const result = await uploadProfileAvatar(formData);
+      if (result.success) {
+        Alert.alert('Success', 'Profile picture updated!');
+        // Re-fetch user data to get the updated hasAvatar flag and refresh avatar URL with new timestamp
+        fetchUserData();
+      } else {
+        Alert.alert('Upload Failed', result.error || 'Could not upload profile picture.');
+        // Revert to old avatar on fail, if userData and _id exist
+        setAvatarSource(userData?.hasAvatar && userData?._id ? { uri: getAvatarUrl(userData._id, avatarTimestamp) } : null);
+      }
+    } catch (error) {
+      Alert.alert('Upload Failed', error.error || 'An unexpected error occurred.');
+      setAvatarSource(userData?.hasAvatar && userData?._id ? { uri: getAvatarUrl(userData._id, avatarTimestamp) } : null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleImageTap = () => {
+    if (avatarSource && avatarSource.uri) {
+      setPreviewImageUri(avatarSource.uri);
+      setIsPreviewModalVisible(true);
+    }
+  };
+
+  // handleImagePressOut is no longer needed for the main image
 
   const checkProfessionStatus = useCallback(async () => {
     if (isLoggingOut) return;
     try {
-      console.log('ProfileScreen: checkProfessionStatus - Checking.');
       const professionStatus = await AsyncStorage.getItem('isProfession');
       if (!isLoggingOut) setIsProfession(professionStatus === 'true');
     } catch (err) {
@@ -112,37 +178,30 @@ const ProfileScreen = ({navigation}) => {
 
   const initializeData = useCallback(async () => {
     if (isLoggingOut) {
-      console.log('ProfileScreen: initializeData - Logout in progress, skipping.');
       return;
     }
-    console.log('ProfileScreen: initializeData - Starting...');
-    await checkProfessionStatus(); // This might set isProfession
+    await checkProfessionStatus();
     await fetchUserData();
   }, [checkProfessionStatus, fetchUserData, isLoggingOut]);
 
   useEffect(() => {
-    // Initial data load
-    if (!isLoggingOut) { // Prevent initial load if a logout was somehow triggered before mount
+    if (!isLoggingOut) {
         initializeData();
     }
-  }, [initializeData]); // isLoggingOut added
+  }, [initializeData, isLoggingOut]); // isLoggingOut added
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      console.log('ProfileScreen focused. Current isLoggingOut:', isLoggingOut);
-       // If not currently in a logout process initiated by this screen,
-      // then it's okay to re-initialize data.
       if (!isLoggingOut) {
         initializeData();
       }
     });
     return unsubscribe;
-  }, [navigation, initializeData, isLoggingOut]); // Corrected dependency array
+  }, [navigation, initializeData, isLoggingOut]);
 
 
   const onRefresh = useCallback(() => {
     if (isLoggingOut) return;
-    console.log('ProfileScreen: Refreshing data...');
     setRefreshing(true);
     initializeData();
   }, [initializeData, isLoggingOut]);
@@ -161,37 +220,34 @@ const ProfileScreen = ({navigation}) => {
     extrapolate: 'clamp',
   });
 
-  // If logging out, show a specific message
   if (isLoggingOut) {
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="light-content" />
         <LinearGradient
-          colors={[PRIMARY_COLOR, PRIMARY_COLOR]} // Updated
+          colors={[PRIMARY_COLOR, PRIMARY_COLOR]}
           style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#FFFFFF" />
+          <ActivityIndicator size="large" color={WHITE} />
           <AppText style={styles.loadingText}>Logging out...</AppText>
         </LinearGradient>
       </SafeAreaView>
     );
   }
 
-  // Render loading state (only if no user data yet and not refreshing)
   if (loading && !refreshing && !userData) {
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="light-content" />
         <LinearGradient
-          colors={[PRIMARY_COLOR, PRIMARY_COLOR]} // Updated
+          colors={[PRIMARY_COLOR, PRIMARY_COLOR]}
           style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#FFFFFF" />
+          <ActivityIndicator size="large" color={WHITE} />
           <AppText style={styles.loadingText}>Loading profile...</AppText>
         </LinearGradient>
       </SafeAreaView>
     );
   }
 
-  // Render error state (only if no user data yet)
   if (error && !userData) {
     return (
       <SafeAreaView style={styles.container}>
@@ -208,7 +264,6 @@ const ProfileScreen = ({navigation}) => {
     );
   }
 
-  // Render profile content
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
@@ -217,8 +272,8 @@ const ProfileScreen = ({navigation}) => {
         isVisible={isMenuVisible}
         onClose={() => setIsMenuVisible(false)}
         navigation={navigation}
-        setIsLoggedIn={() => {}} // Might not be needed if navigation.replace handles state
-        userData={userData}
+        setIsLoggedIn={() => {}}
+        userData={userData} // Pass userData to SideMenu
       />
 
       <Animated.View
@@ -230,15 +285,15 @@ const ProfileScreen = ({navigation}) => {
           },
         ]}>
         <LinearGradient
-          colors={[PRIMARY_COLOR, PRIMARY_COLOR]} // Updated
+          colors={[PRIMARY_COLOR, PRIMARY_COLOR]}
           style={styles.gradientHeader}>
           <TouchableOpacity
             style={styles.menuButton}
             onPress={() => setIsMenuVisible(true)}>
-            <Icon name="menu" size={28} color="#FFFFFF" />
+            <Icon name="menu" size={28} color={WHITE} />
           </TouchableOpacity>
           <AppText style={styles.headerTitle} bold>My Profile</AppText>
-          <View style={styles.menuButton} /> 
+          <View style={styles.menuButton} />
         </LinearGradient>
       </Animated.View>
 
@@ -249,8 +304,8 @@ const ProfileScreen = ({navigation}) => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={[PRIMARY_COLOR]} // Updated
-            tintColor={PRIMARY_COLOR} // Updated
+            colors={[PRIMARY_COLOR]}
+            tintColor={PRIMARY_COLOR}
           />
         }
         scrollEventThrottle={16}
@@ -258,30 +313,35 @@ const ProfileScreen = ({navigation}) => {
           [{nativeEvent: {contentOffset: {y: scrollY}}}],
           {useNativeDriver: false},
         )}>
-        
+
         <View style={styles.profileSection}>
-          <View style={styles.avatarContainer}>
-            {userData?.avatar ? (
-              <Image
-                source={{uri: userData.avatar}}
-                style={styles.avatarImage}
-              />
+          <TouchableOpacity
+            onPress={handleImageTap} // Changed to onPress for preview
+            onLongPress={handleChoosePhoto} // Long press can now be for changing photo, or you can add a separate button
+            style={styles.avatarContainer}>
+            {avatarSource && avatarSource.uri ? (
+              <Image source={avatarSource} style={styles.avatarImage} key={`avatar-${avatarTimestamp}`} />
             ) : (
               <LinearGradient
-                colors={[PRIMARY_COLOR, '#2980b9']} // Updated, using a slightly lighter shade for gradient if desired
-                style={styles.avatarPlaceholder}>
+                colors={[PRIMARY_COLOR, '#2980b9']}
+                style={styles.avatarPlaceholder}
+              >
                 <AppText style={styles.avatarInitial} bold>
-                  {userData?.name ? userData.name.charAt(0).toUpperCase() : '?'}
+                  {userData?.name ? userData.name.charAt(0).toUpperCase() : <MaterialIcons name="person-add" size={40} color={WHITE} />}
                 </AppText>
               </LinearGradient>
             )}
-          </View>
+            {/* Camera icon for changing photo - can be made more prominent if long press is removed for it */}
+            <TouchableOpacity onPress={handleChoosePhoto} style={styles.cameraIconOverlay}>
+              {/* <MaterialIcons name="photo-camera" size={20} color={PRIMARY_COLOR} /> */}
+            </TouchableOpacity>
+          </TouchableOpacity>
 
           <AppText style={styles.userName} bold>{userData?.name || 'Your Name'}</AppText>
 
           <View style={styles.userInfoContainer}>
             <View style={styles.infoItem}>
-              <Icon name="mail-outline" size={18} color={PRIMARY_COLOR} /> 
+              <Icon name="mail-outline" size={18} color={PRIMARY_COLOR} />
               <AppText style={styles.infoText}>
                 {userData?.email || 'your.email@example.com'}
               </AppText>
@@ -294,7 +354,7 @@ const ProfileScreen = ({navigation}) => {
               </AppText>
             </View>
 
-            {userData?.location && (
+            {userData?.location && ( // Assuming location might come from professional profile part of userData
               <View style={styles.infoItem}>
                 <Icon name="location-outline" size={18} color={PRIMARY_COLOR} />
                 <AppText style={styles.infoText}>{userData.location}</AppText>
@@ -321,16 +381,16 @@ const ProfileScreen = ({navigation}) => {
             </AppText>
             <TouchableOpacity
               style={styles.addProfessionButton}
-              onPress={() => navigation.navigate('AddProfession')}>
+              onPress={() => navigation.navigate('AddProfession', { editMode: false, existingData: userData })}>
               <LinearGradient
-                colors={[PRIMARY_COLOR, '#2980b9']} // Updated
+                colors={[PRIMARY_COLOR, '#2980b9']}
                 start={{x: 0, y: 0}}
                 end={{x: 1, y: 0}}
                 style={styles.gradientButton}>
                 <AppText style={styles.addButtonText} semiBold>
                   Create Professional Profile
                 </AppText>
-                <Icon name="arrow-forward" size={18} color="#FFFFFF" />
+                <Icon name="arrow-forward" size={18} color={WHITE} />
               </LinearGradient>
             </TouchableOpacity>
           </LinearGradient>
@@ -354,14 +414,14 @@ const ProfileScreen = ({navigation}) => {
         )}
 
         <View style={styles.actionsContainer}>
-      {isProfession && (
+        {isProfession && (
           <TouchableOpacity
               style={styles.actionButton}
               onPress={() => navigation.navigate('AddProfession', { editMode: true, existingData: userData })}>
               <View
                 style={[
                   styles.actionIconContainer,
-                  {backgroundColor: '#E0F2F7'}, // A light blue/teal for edit
+                  {backgroundColor: '#E0F2F7'},
                 ]}>
                 <Icon name="create-outline" size={24} color="#00796B" />
               </View>
@@ -394,12 +454,36 @@ const ProfileScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
+
+      {/* Image Preview Modal */}
+      <Modal
+        transparent={true}
+        visible={isPreviewModalVisible}
+        onRequestClose={() => setIsPreviewModalVisible(false)} // For Android back button
+        animationType="fade"
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setIsPreviewModalVisible(false)} // Close on tap outside the image
+        >
+          {previewImageUri && (
+            <Image
+              source={{ uri: previewImageUri }}
+              style={styles.previewImage}
+              resizeMode="contain"
+            />
+          )}
+          <TouchableOpacity style={styles.closeButton} onPress={() => setIsPreviewModalVisible(false)}>
+            <Icon name="close-circle" size={30} color={WHITE} />
+          </TouchableOpacity>
+        </TouchableOpacity>
+      </Modal>
     </SafeAreaView>
   );
 };
 
 export default ProfileScreen;
-
 
 // // ProfileScreen.js
 // import React, {useEffect, useState, useCallback} from 'react';

@@ -32,6 +32,13 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4,
   },
+  avatarImageLarge: { // Style for the larger avatar image on this screen
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    marginBottom: 16,
+    backgroundColor: '#F0F0F0', // Placeholder while image loads
+  },
   avatarLetter: {
     color: 'white',
     fontSize: 35,
@@ -261,6 +268,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     // fontWeight: 'bold', // Handled by AppText
     marginLeft: 8,
+  },
+  // Styles for Image Preview Modal (can be similar to ProfileStyles)
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  previewImage: {
+    width: '90%',
+    height: '80%',
+    borderRadius: 10,
+  },
+  closeButton: { // Can be the same as in ProfileStyles or customized
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    padding: 10,
+    zIndex: 1,
   },
 });
 

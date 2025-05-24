@@ -12,7 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
-import AppText from './AppText'; // Import AppText
+import AppText from './AppText';
 import { getUserProfile } from '../services/api'; // Import the getUserProfile function
 
 const ROYAL_BLUE = '#1a4b8c';
@@ -23,6 +23,7 @@ const WHITE = '#FFFFFF';
 const SideMenu = ({ isVisible, onClose, navigation, setIsLoggedIn }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [avatarTimestamp, setAvatarTimestamp] = useState(Date.now());
 
   // Fetch user data when the component mounts or when isVisible changes
   useEffect(() => {
@@ -32,6 +33,7 @@ const SideMenu = ({ isVisible, onClose, navigation, setIsLoggedIn }) => {
         const response = await getUserProfile();
         if (response.success) {
           setUserData(response.data);
+          setAvatarTimestamp(Date.now()); // Refresh timestamp
         } else {
           console.error('Failed to fetch user data');
         }
@@ -80,12 +82,18 @@ const SideMenu = ({ isVisible, onClose, navigation, setIsLoggedIn }) => {
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
             >
-              <View style={styles.profileImageContainer}>
+              {/* Avatar Display */}
+              {userData?.hasAvatar && userData?._id ? (
                 <Image
-                  source={{ uri: userData?.avatar || 'https://via.placeholder.com/100' }}
+                  source={{ uri: `${require('../services/api').getAvatarUrl(userData._id, avatarTimestamp)}` }} // Use getAvatarUrl
                   style={styles.profileImage}
+                  key={avatarTimestamp} // Force re-render on timestamp change
                 />
-              </View>
+              ) : (
+                <View style={styles.profileImagePlaceholder}>
+                  <Icon name="person" size={40} color={ROYAL_BLUE} />
+                </View>
+              )}
               {loading ? (
                 <AppText style={styles.profileName} bold>Loading...</AppText>
               ) : (
@@ -158,18 +166,24 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
   },
-  profileImageContainer: {
+  profileImage: {
     width: 80,
     height: 80,
     borderRadius: 40,
-    overflow: 'hidden',
     borderWidth: 3,
     borderColor: WHITE,
     marginBottom: 10,
   },
-  profileImage: {
-    width: '100%',
-    height: '100%',
+  profileImagePlaceholder: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: 'rgba(255,255,255,0.9)', // Lighter placeholder
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 3,
+    borderColor: WHITE,
+    marginBottom: 10,
   },
   profileName: {
      textAlign: 'center',
