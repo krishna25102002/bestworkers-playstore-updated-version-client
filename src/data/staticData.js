@@ -519,7 +519,6 @@ export const serviceCategories = [
   { label: 'Beauty & Grooming', value: 'Beauty & Grooming' },
   { label: 'Teaching & Education', value: 'Teaching & Education' },
   { label: 'Banking & Office Jobs', value: 'Banking & Office Jobs' },
-  { label: 'North Indian Workers', value: 'North Indian Workers' },
   { label: 'Village & Agricultural Workers', value: 'Village & Agricultural Workers' },
 ];
 
@@ -603,20 +602,6 @@ export const serviceNames = {
     { label: 'Bank Staff', value: 'Bank Staff' },
     { label: 'Office Clerk', value: 'Office Clerk' }, 
      { label: 'Others', value: 'Explore others' },// Added for completeness
-  ],
-  'North Indian Workers': [
-    { label: 'Mason', value: 'Mason' },
-    { label: 'Mason Helper', value: 'Mason Helper' },
-    { label: 'Welder', value: 'Welder' },
-    { label: 'Painter', value: 'Painter' },
-    { label: 'Load Man', value: 'Load Man' },
-    { label: 'Garment Worker', value: 'Garment Worker' },
-    { label: 'Tailor', value: 'Tailor' },
-    { label: 'Hotel Worker', value: 'Hotel Worker' }, // Simplified from 'Hotel Workers (Tea Masters, Cooks, Suppliers)'
-    { label: 'Security Guard', value: 'Security Guard' },
-    { label: 'Delivery Worker', value: 'Delivery Worker' },
-    { label: 'Construction Worker', value: 'Construction Worker' },
-     { label: 'Others', value: 'Explore others' },
   ],
   'Village & Agricultural Workers': [
     { label: 'Field Worker', value: 'Field Worker' }, // Changed from 'Village Field Workers'

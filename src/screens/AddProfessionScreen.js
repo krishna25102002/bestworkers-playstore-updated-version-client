@@ -48,7 +48,7 @@ const AddProfessionScreen = ({navigation}) => {
   const [experience, setExperience] = useState('');
   // const [servicePrice, setServicePrice] = useState(''); // Commented out
   // const [priceUnit, setPriceUnit] = useState('per hour'); // Commented out
-  const [needSupport, setNeedSupport] = useState(false);
+  // const [needSupport, setNeedSupport] = useState(false);
   const [professionDescription, setProfessionDescription] = useState('');
   const [isAgreed, setIsAgreed] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -84,7 +84,7 @@ const AddProfessionScreen = ({navigation}) => {
       setExperience(existingData.experience || '');
       // setServicePrice(existingData.servicePrice ? String(existingData.servicePrice) : ''); // Commented out
       // setPriceUnit(existingData.priceUnit || 'per hour'); // Commented out
-      setNeedSupport(existingData.needSupport || false);
+      // setNeedSupport(existingData.needSupport || false);
       setProfessionDescription(existingData.professionDescription || '');
 
       // Populate State/District/City
@@ -294,7 +294,7 @@ const AddProfessionScreen = ({navigation}) => {
           experience,
           // servicePrice: servicePrice ? parseFloat(servicePrice) : undefined, // Commented out, send undefined if empty
           // priceUnit: priceUnit || 'per hour', // Commented out, ensure a default or handle if empty
-          needSupport,
+          // needSupport,
           professionDescription,
           // isAgreed is for client-side validation, not usually sent to backend
         };
@@ -703,7 +703,7 @@ const AddProfessionScreen = ({navigation}) => {
             <AppText style={styles.errorText}>{errors.servicePrice}</AppText>
           )}
         </View> */}
-        <View style={styles.inputContainer}>
+        {/* <View style={styles.inputContainer}>
           <AppText style={styles.label}>Need BW Team Support</AppText>
           <View style={styles.radioContainer}>
             <TouchableOpacity
@@ -731,7 +731,7 @@ const AddProfessionScreen = ({navigation}) => {
               <AppText style={styles.radioLabel}>No</AppText>
             </TouchableOpacity>
           </View>
-        </View>
+        </View> */}
         <View style={styles.inputContainer}>
           <AppText style={styles.label}>Profession Description (Optional)</AppText>
           <TextInput
@@ -750,13 +750,13 @@ const AddProfessionScreen = ({navigation}) => {
                 style={styles.checkbox}
                 onPress={() => setIsAgreed(!isAgreed)}>
                 {isAgreed ? (
-                <AntDesign name="checkcircle" size={24} color="#1E40AF" />
+                <AntDesign name="checksquareo" size={22} color="#1E40AF" />
                 ) : (
-                <AntDesign name="checkcircleo" size={24} color="#94A3B8" />
+                <AntDesign name="checksquareo" size={22} color="#94A3B8" />
                 )}
             </TouchableOpacity>
             <AppText style={styles.checkboxLabel}>
-                I acknowledge every detail given here is true
+                I accept Terms and Conditions.
             </AppText>
             </View>
         )}
