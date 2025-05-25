@@ -172,7 +172,7 @@ const ProfessionalDetailScreen = ({ navigation, route }) => {
       {professional.designation && professional.designation !== professional.service &&
         renderDetailItem('badge', 'Specific Role / Custom Service', professional.designation)}
           {renderDetailItem('description', 'Description', professional.professionDescription)}
-          {renderDetailItem('help-outline', 'BestWorkers Approved', professional.needSupport ? 'Yes' : 'No')}
+          {/* {renderDetailItem('help-outline', 'BestWorkers Approved', professional.needSupport ? 'Yes' : 'No')} */}
         </View>
 
         {/* Additional Information */}
