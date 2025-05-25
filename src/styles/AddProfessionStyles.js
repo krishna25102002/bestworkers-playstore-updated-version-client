@@ -253,6 +253,7 @@ const styles = StyleSheet.create({
     color: '#1E40AF',
   },
   modalTitle: {
+    textAlign: 'center',
     fontSize: 22,
     // fontWeight: '700', // Handled by <AppText bold>
     marginBottom: 10,
