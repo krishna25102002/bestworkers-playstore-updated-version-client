@@ -38,14 +38,15 @@ export const styles = StyleSheet.create({
     // fontFamily: 'Poppins-Bold', // No longer needed if using <AppText bold>
   },
   searchContainer: {
+    height: 55,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.white,
     borderRadius: 12, // Match ProfessionalCard borderRadius
-    paddingHorizontal: 12, // Adjusted padding
+    paddingHorizontal: 15, // Adjusted padding
     paddingVertical: Platform.OS === 'ios' ? 10 : 6, // Adjusted padding
     marginHorizontal: 16,
-    marginTop: 10,
+    marginTop: 13,
     marginBottom: 15,
     // Shadow properties similar to ProfessionalCard
     shadowColor: '#000',
